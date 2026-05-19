@@ -8,27 +8,42 @@ import {
   Car,
   Coffee,
   MapPin,
+  Moon,
   ParkingCircle,
   Rocket,
   Sparkles,
   Star,
+  Sun,
   Trees,
   UsersRound,
   Zap,
 } from "lucide-react";
 
-import CityDashboardHero from "../components/CityDashboardHero";
 import LiveSignals from "../components/LiveSignals";
 import AskCityPanel from "../components/AskCityPanel";
 import PreviewDashboard from "../components/PreviewDashboard";
 import RoadmapShowcase from "../components/RoadmapShowcase";
 import SiteFooter from "../components/SiteFooter";
+import HybridCityMap from "../components/HybridCityMap";
+
 
 type Lang = "en" | "tr" | "de";
+type CityMode = "night" | "day" | "work" | "event";
 
 const copy = {
   en: {
     nav: ["Preview", "Signals", "AI", "Business", "Roadmap", "Early Access"],
+    heroTag: "Private Preview Build",
+    heroA: "SEVORA is being",
+    heroB: "built live.",
+    heroText:
+      "A real-time city life assistant where 3D city pulse, AI suggestions, crowd signals, calm places, parking and local business visibility come together.",
+    cta: "Explore Preview",
+    roadmap: "View Roadmap",
+    progress: "Preview build progress",
+    status: "Private development",
+    modeTitle: "City Mode",
+    modes: { night: "Night", day: "Day", work: "Work", event: "Event" },
     stats: [
       ["3D City Engine", "Active", "Live"],
       ["AI Layer", "Building", "Soon"],
@@ -63,6 +78,17 @@ const copy = {
   },
   tr: {
     nav: ["Preview", "Sinyaller", "AI", "İşletme", "Roadmap", "Erken Erişim"],
+    heroTag: "Private Preview Build",
+    heroA: "SEVORA canlı",
+    heroB: "olarak inşa ediliyor.",
+    heroText:
+      "3D şehir pulse sistemi, AI önerileri, kalabalık sinyalleri, sakin yerler, park ve yerel işletme görünürlüğünü birleştiren gerçek zamanlı şehir asistanı.",
+    cta: "Preview’i Keşfet",
+    roadmap: "Roadmap’i Gör",
+    progress: "Preview geliştirme durumu",
+    status: "Özel geliştirme aşaması",
+    modeTitle: "Şehir Modu",
+    modes: { night: "Gece", day: "Gündüz", work: "Çalışma", event: "Etkinlik" },
     stats: [
       ["3D Şehir Motoru", "Aktif", "Canlı"],
       ["AI Katmanı", "Gelişiyor", "Yakında"],
@@ -97,6 +123,17 @@ const copy = {
   },
   de: {
     nav: ["Preview", "Signale", "AI", "Business", "Roadmap", "Early Access"],
+    heroTag: "Private Preview Build",
+    heroA: "SEVORA wird",
+    heroB: "live aufgebaut.",
+    heroText:
+      "Ein Echtzeit-Stadtassistent mit 3D City Pulse, KI-Empfehlungen, Dichte-Signalen, ruhigen Orten, Parken und lokaler Business-Sichtbarkeit.",
+    cta: "Preview entdecken",
+    roadmap: "Roadmap ansehen",
+    progress: "Preview Fortschritt",
+    status: "Private Entwicklung",
+    modeTitle: "City Mode",
+    modes: { night: "Nacht", day: "Tag", work: "Work", event: "Event" },
     stats: [
       ["3D City Engine", "Aktiv", "Live"],
       ["AI Layer", "Aufbau", "Bald"],
@@ -132,6 +169,7 @@ const copy = {
 };
 
 const langs: Lang[] = ["en", "tr", "de"];
+const modes: CityMode[] = ["night", "day", "work", "event"];
 const statIcons = [Sparkles, Zap, Bell, Rocket];
 const dailyIcons = [UsersRound, Trees, ParkingCircle, CalendarDays, Building2, Star];
 const businessIcons = [Coffee, Car, CalendarDays, MapPin];
@@ -149,10 +187,32 @@ function LogoMark({ large = false }: { large?: boolean }) {
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
+  const [mode, setMode] = useState<CityMode>("night");
+  const [active, setActive] = useState("home");
   const t = useMemo(() => copy[lang], [lang]);
+
+  const navItems = [
+    ["preview-dashboard", t.nav[0]],
+    ["signals", t.nav[1]],
+    ["ask-city", t.nav[2]],
+    ["business", t.nav[3]],
+    ["roadmap", t.nav[4]],
+    ["waitlist", t.nav[5]],
+  ];
+
+  const dock = [
+    ["home", "Home"],
+    ["preview-dashboard", "Preview"],
+    ["signals", "Signals"],
+    ["ask-city", "Ask City"],
+    ["business", "Business"],
+    ["roadmap", "Roadmap"],
+    ["waitlist", "Access"],
+  ];
 
   useEffect(() => {
     const reveals = document.querySelectorAll(".reveal");
+    const sections = document.querySelectorAll("section[id]");
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -163,49 +223,192 @@ export default function Home() {
       { threshold: 0.12 }
     );
 
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target?.id) {
+          setActive(visible.target.id);
+        }
+      },
+      {
+        threshold: [0.18, 0.35, 0.55],
+        rootMargin: "-18% 0px -55% 0px",
+      }
+    );
+
     reveals.forEach((item) => revealObserver.observe(item));
+    sections.forEach((item) => sectionObserver.observe(item));
 
     return () => {
       revealObserver.disconnect();
+      sectionObserver.disconnect();
     };
   }, []);
 
+  function handleNavClick(id: string) {
+    setActive(id);
+  }
+
   return (
     <main className="page">
-      <div className="language hybridLanguage">
-        {langs.map((item) => (
-          <button
-            key={item}
-            type="button"
-            onClick={() => setLang(item)}
-            className={lang === item ? "active" : ""}
+      <section className="hero" id="home">
+        <div className="heroShade" />
+
+        <header className="header">
+          <a className="brand" href="#home" onClick={() => handleNavClick("home")}>
+            <LogoMark large />
+            <span>
+              <strong>SEVORA</strong>
+              <small>PRIVATE PREVIEW</small>
+            </span>
+          </a>
+
+          <nav className="topNav">
+            {navItems.map(([id, label]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={() => handleNavClick(id)}
+                className={active === id ? "active" : id === "waitlist" ? "navButton" : ""}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="language">
+            {langs.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setLang(item)}
+                className={lang === item ? "active" : ""}
+              >
+                {item.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </header>
+
+        <aside className="dock">
+          <a
+            href="#home"
+            className={`homeBubble homeBubbleLogo ${active === "home" ? "active" : ""}`}
+            onClick={() => handleNavClick("home")}
+            aria-label="Back to SEVORA hero"
           >
-            {item.toUpperCase()}
-          </button>
-        ))}
-      </div>
+            <LogoMark />
+          </a>
 
-      <CityDashboardHero lang={lang} />
+          {dock.slice(1).map((item, index) => (
+            <a
+              key={item[0]}
+              href={`#${item[0]}`}
+              className={active === item[0] ? "active" : ""}
+              onClick={() => handleNavClick(item[0])}
+            >
+              <span>{String(index + 2).padStart(2, "0")}</span>
+              <i />
+              {item[1]}
+            </a>
+          ))}
+        </aside>
 
-      <section className="stats reveal visible">
-        {t.stats.map((stat, index) => {
-          const Icon = statIcons[index];
+        <div className="heroGrid">
+          <div className="heroCopy reveal visible">
+            <p className="kicker">
+              <i />
+              {t.heroTag}
+            </p>
 
-          return (
-            <article className={`stat stat${index + 1}`} key={stat[0]}>
-              <div className="icon">
-                <Icon size={23} />
-              </div>
+            <h1>
+              {t.heroA}
+              <br />
+              <em>{t.heroB}</em>
+            </h1>
 
+            <p className="lead">{t.heroText}</p>
+
+            <div className="heroActions">
+              <a
+                href="#preview-dashboard"
+                className="primaryButton"
+                onClick={() => handleNavClick("preview-dashboard")}
+              >
+                {t.cta}
+                <span>→</span>
+              </a>
+
+              <a
+                href="#roadmap"
+                className="demoButton"
+                onClick={() => handleNavClick("roadmap")}
+              >
+                {t.roadmap}
+                <span>↘</span>
+              </a>
+            </div>
+
+            <div className="previewProgress">
               <div>
-                <p>{stat[0]}</p>
-                <small>{stat[1]}</small>
-                <strong>{stat[2]}</strong>
-                <span className="lineGraph" />
+                <strong>{t.progress}</strong>
+                <span>42%</span>
               </div>
-            </article>
-          );
-        })}
+              <i>
+                <b />
+              </i>
+              <small>{t.status}</small>
+            </div>
+          </div>
+
+          <div className="cityStage">
+            <div className="modeControl">
+              <strong>{t.modeTitle}</strong>
+              <div>
+                {modes.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setMode(item)}
+                    className={mode === item ? "active" : ""}
+                  >
+                    {item === "night" && <Moon size={14} />}
+                    {item === "day" && <Sun size={14} />}
+                    {item === "work" && <Coffee size={14} />}
+                    {item === "event" && <Sparkles size={14} />}
+                    {t.modes[item]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <HybridCityMap />
+          </div>
+        </div>
+
+        <section className="stats reveal visible">
+          {t.stats.map((stat, index) => {
+            const Icon = statIcons[index];
+
+            return (
+              <article className={`stat stat${index + 1}`} key={stat[0]}>
+                <div className="icon">
+                  <Icon size={23} />
+                </div>
+
+                <div>
+                  <p>{stat[0]}</p>
+                  <small>{stat[1]}</small>
+                  <strong>{stat[2]}</strong>
+                  <span className="lineGraph" />
+                </div>
+              </article>
+            );
+          })}
+        </section>
       </section>
 
       <PreviewDashboard />
@@ -241,7 +444,9 @@ export default function Home() {
           <p className="sectionKicker">BUSINESS LAYER</p>
           <h2>{t.businessTitle}</h2>
           <span>{t.businessText}</span>
-          <a href="#waitlist">Business Preview →</a>
+          <a href="#waitlist" onClick={() => handleNavClick("waitlist")}>
+            Business Preview →
+          </a>
         </div>
 
         <div className="businessGrid">
@@ -283,7 +488,7 @@ export default function Home() {
 
       <SiteFooter />
 
-      <a className="backTop" href="#home">
+      <a className="backTop" href="#home" onClick={() => handleNavClick("home")}>
         ↑
       </a>
     </main>
