@@ -1,5 +1,3 @@
-# SEVORA Live Starter
+# SEVORA Live V2
 
-SEVORA — Feel the city live.
-
-Bu paket GitHub'a yüklenip Vercel'e bağlanabilecek ilk Next.js başlangıç sürümüdür.
+Premium 3D city pulse landing page starter.
