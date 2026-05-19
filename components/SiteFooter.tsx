@@ -1,16 +1,5 @@
 "use client";
 
-import {
-  Instagram,
-  Mail,
-  Phone,
-  ShieldCheck,
-  Globe2,
-  FileText,
-  CreditCard,
-  ExternalLink,
-} from "lucide-react";
-
 const legalLinks = [
   "Hakkımızda",
   "İletişim",
@@ -21,6 +10,10 @@ const legalLinks = [
 ];
 
 const paymentMethods = ["Visa", "Mastercard", "American Express", "Troy"];
+
+function MiniIcon({ label }: { label: string }) {
+  return <span className="footerMiniIcon">{label}</span>;
+}
 
 export default function SiteFooter() {
   return (
@@ -44,7 +37,7 @@ export default function SiteFooter() {
 
         <div className="footerContactGrid">
           <a href="mailto:sevora.live@gmail.com" className="footerContactCard">
-            <Mail size={20} />
+            <MiniIcon label="@" />
             <span>Email</span>
             <strong>sevora.live@gmail.com</strong>
           </a>
@@ -55,19 +48,19 @@ export default function SiteFooter() {
             rel="noreferrer"
             className="footerContactCard"
           >
-            <Instagram size={20} />
+            <MiniIcon label="IG" />
             <span>Instagram</span>
             <strong>@sevora.live</strong>
           </a>
 
           <a href="tel:+905317234801" className="footerContactCard">
-            <Phone size={20} />
+            <MiniIcon label="☎" />
             <span>Phone</span>
             <strong>0531 723 48 01</strong>
           </a>
 
           <a href="https://sevora.live" className="footerContactCard">
-            <Globe2 size={20} />
+            <MiniIcon label="WWW" />
             <span>Website</span>
             <strong>sevora.live</strong>
           </a>
@@ -77,7 +70,7 @@ export default function SiteFooter() {
       <div className="footerMiddle">
         <div className="footerColumn">
           <h3>
-            <FileText size={18} />
+            <MiniIcon label="DOC" />
             Legal & Company
           </h3>
 
@@ -85,7 +78,7 @@ export default function SiteFooter() {
             {legalLinks.map((item) => (
               <a href="#" key={item}>
                 {item}
-                <ExternalLink size={13} />
+                <span>↗</span>
               </a>
             ))}
           </div>
@@ -93,7 +86,7 @@ export default function SiteFooter() {
 
         <div className="footerColumn">
           <h3>
-            <CreditCard size={18} />
+            <MiniIcon label="PAY" />
             Payment Methods
           </h3>
 
@@ -113,7 +106,7 @@ export default function SiteFooter() {
 
         <div className="footerColumn">
           <h3>
-            <ShieldCheck size={18} />
+            <MiniIcon label="OK" />
             Preview Notice
           </h3>
 
