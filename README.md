@@ -1,3 +1,3 @@
-# SEVORA Live V2
+# SEVORA Live V3
 
-Premium 3D city pulse landing page starter.
+Premium multilingual 3D city landing page.
