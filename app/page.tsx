@@ -46,12 +46,7 @@ const copy = {
     progress: "Preview build progress",
     status: "Private development",
     modeTitle: "City Mode",
-    modes: {
-      night: "Night",
-      day: "Day",
-      work: "Work",
-      event: "Event",
-    },
+    modes: { night: "Night", day: "Day", work: "Work", event: "Event" },
     stats: [
       ["3D City Engine", "Active", "Live"],
       ["AI Layer", "Building", "Soon"],
@@ -96,12 +91,7 @@ const copy = {
     progress: "Preview geliştirme durumu",
     status: "Özel geliştirme aşaması",
     modeTitle: "Şehir Modu",
-    modes: {
-      night: "Gece",
-      day: "Gündüz",
-      work: "Çalışma",
-      event: "Etkinlik",
-    },
+    modes: { night: "Gece", day: "Gündüz", work: "Çalışma", event: "Etkinlik" },
     stats: [
       ["3D Şehir Motoru", "Aktif", "Canlı"],
       ["AI Katmanı", "Gelişiyor", "Yakında"],
@@ -146,12 +136,7 @@ const copy = {
     progress: "Preview Fortschritt",
     status: "Private Entwicklung",
     modeTitle: "City Mode",
-    modes: {
-      night: "Nacht",
-      day: "Tag",
-      work: "Work",
-      event: "Event",
-    },
+    modes: { night: "Nacht", day: "Tag", work: "Work", event: "Event" },
     stats: [
       ["3D City Engine", "Aktiv", "Live"],
       ["AI Layer", "Aufbau", "Bald"],
@@ -209,6 +194,25 @@ export default function Home() {
   const [active, setActive] = useState("home");
   const t = useMemo(() => copy[lang], [lang]);
 
+  const navItems = [
+    ["preview-dashboard", t.nav[0]],
+    ["signals", t.nav[1]],
+    ["ask-city", t.nav[2]],
+    ["business", t.nav[3]],
+    ["roadmap", t.nav[4]],
+    ["waitlist", t.nav[5]],
+  ];
+
+  const dock = [
+    ["home", "Home"],
+    ["preview-dashboard", "Preview"],
+    ["signals", "Signals"],
+    ["ask-city", "Ask City"],
+    ["business", "Business"],
+    ["roadmap", "Roadmap"],
+    ["waitlist", "Access"],
+  ];
+
   useEffect(() => {
     const reveals = document.querySelectorAll(".reveal");
     const sections = document.querySelectorAll("section[id]");
@@ -224,9 +228,18 @@ export default function Home() {
 
     const sectionObserver = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => entry.isIntersecting && setActive(entry.target.id));
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target?.id) {
+          setActive(visible.target.id);
+        }
       },
-      { rootMargin: "-45% 0px -45% 0px" }
+      {
+        threshold: [0.18, 0.35, 0.55],
+        rootMargin: "-18% 0px -55% 0px",
+      }
     );
 
     reveals.forEach((item) => revealObserver.observe(item));
@@ -238,15 +251,9 @@ export default function Home() {
     };
   }, []);
 
-  const dock = [
-    ["home", "Home"],
-    ["preview-dashboard", "Preview"],
-    ["signals", "Signals"],
-    ["ask-city", "Ask City"],
-    ["business", "Business"],
-    ["roadmap", "Roadmap"],
-    ["waitlist", "Access"],
-  ];
+  function handleNavClick(id: string) {
+    setActive(id);
+  }
 
   return (
     <main className="page">
@@ -254,7 +261,7 @@ export default function Home() {
         <div className="heroShade" />
 
         <header className="header">
-          <a className="brand" href="#home">
+          <a className="brand" href="#home" onClick={() => handleNavClick("home")}>
             <LogoMark large />
             <span>
               <strong>SEVORA</strong>
@@ -263,14 +270,16 @@ export default function Home() {
           </a>
 
           <nav className="topNav">
-            <a href="#preview-dashboard">{t.nav[0]}</a>
-            <a href="#signals">{t.nav[1]}</a>
-            <a href="#ask-city">{t.nav[2]}</a>
-            <a href="#business">{t.nav[3]}</a>
-            <a href="#roadmap">{t.nav[4]}</a>
-            <a className="navButton" href="#waitlist">
-              {t.nav[5]}
-            </a>
+            {navItems.map(([id, label]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={() => handleNavClick(id)}
+                className={active === id ? "active" : id === "waitlist" ? "navButton" : ""}
+              >
+                {label}
+              </a>
+            ))}
           </nav>
 
           <div className="language">
@@ -288,14 +297,23 @@ export default function Home() {
         </header>
 
         <aside className="dock">
-          <div className="homeBubble">⌂</div>
-          {dock.map((item, index) => (
+          <a
+            href="#home"
+            className={`homeBubble homeBubbleLogo ${active === "home" ? "active" : ""}`}
+            onClick={() => handleNavClick("home")}
+            aria-label="Back to SEVORA hero"
+          >
+            <LogoMark />
+          </a>
+
+          {dock.slice(1).map((item, index) => (
             <a
               key={item[0]}
               href={`#${item[0]}`}
               className={active === item[0] ? "active" : ""}
+              onClick={() => handleNavClick(item[0])}
             >
-              <span>{String(index + 1).padStart(2, "0")}</span>
+              <span>{String(index + 2).padStart(2, "0")}</span>
               <i />
               {item[1]}
             </a>
@@ -318,12 +336,20 @@ export default function Home() {
             <p className="lead">{t.heroText}</p>
 
             <div className="heroActions">
-              <a href="#preview-dashboard" className="primaryButton">
+              <a
+                href="#preview-dashboard"
+                className="primaryButton"
+                onClick={() => handleNavClick("preview-dashboard")}
+              >
                 {t.cta}
                 <span>→</span>
               </a>
 
-              <a href="#roadmap" className="demoButton">
+              <a
+                href="#roadmap"
+                className="demoButton"
+                onClick={() => handleNavClick("roadmap")}
+              >
                 {t.roadmap}
                 <span>↘</span>
               </a>
@@ -421,7 +447,9 @@ export default function Home() {
           <p className="sectionKicker">BUSINESS LAYER</p>
           <h2>{t.businessTitle}</h2>
           <span>{t.businessText}</span>
-          <a href="#waitlist">Business Preview →</a>
+          <a href="#waitlist" onClick={() => handleNavClick("waitlist")}>
+            Business Preview →
+          </a>
         </div>
 
         <div className="businessGrid">
@@ -461,7 +489,7 @@ export default function Home() {
         </form>
       </section>
 
-      <a className="backTop" href="#home">
+      <a className="backTop" href="#home" onClick={() => handleNavClick("home")}>
         ↑
       </a>
     </main>
