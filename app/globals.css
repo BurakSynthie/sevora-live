@@ -2059,3 +2059,247 @@ body::-webkit-scrollbar-thumb:hover {
     display: none;
   }
 }
+
+/* ===== HYBRID MAP EMBED FIX: keeps old header/dock layout ===== */
+
+.hybridMapEmbed {
+  position: relative;
+  height: 100%;
+  min-height: 610px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 42px;
+  background: #020814;
+  overflow: hidden;
+  box-shadow: 0 30px 120px rgba(34,211,238,.14);
+}
+
+.hybridMapHeader {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 18px;
+  z-index: 12;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  background: rgba(2,8,20,.68);
+  padding: 12px 14px;
+  backdrop-filter: blur(18px);
+}
+
+.hybridMapHeader span {
+  display: block;
+  margin-bottom: 4px;
+  color: #67e8f9;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.hybridMapHeader strong {
+  display: block;
+  color: #fff;
+  font-size: 18px;
+}
+
+.hybridMapHeaderActions {
+  display: flex;
+  gap: 7px;
+}
+
+.hybridMapHeaderActions button {
+  min-width: 38px;
+  min-height: 34px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  color: white;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.hybridMapCanvas {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  user-select: none;
+}
+
+.hybridMapCanvas.dragging {
+  cursor: grabbing;
+}
+
+.hybridMapInner {
+  position: absolute;
+  inset: -8%;
+  transform-origin: center;
+  transition: transform .12s ease-out;
+}
+
+.hybridMapInner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(2,8,20,.62), transparent 22%, transparent 76%, rgba(2,8,20,.64)),
+    linear-gradient(180deg, rgba(2,8,20,.18), transparent 48%, rgba(2,8,20,.72));
+  pointer-events: none;
+}
+
+.hybridMapInner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+.hybridPinCard {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  min-width: 132px;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, var(--tone) 50%, transparent);
+  border-radius: 17px;
+  background: rgba(2,8,20,.74);
+  color: white;
+  padding: 12px 13px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 20px 70px rgba(0,0,0,.35), 0 0 24px color-mix(in srgb, var(--tone) 22%, transparent);
+  backdrop-filter: blur(16px);
+  transition: .22s ease;
+}
+
+.hybridPinCard:hover,
+.hybridPinCard.active {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: color-mix(in srgb, var(--tone) 14%, rgba(2,8,20,.82));
+}
+
+.hybridPinCard span {
+  justify-self: start;
+  margin-bottom: 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tone) 20%, transparent);
+  color: var(--tone);
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.hybridPinCard b {
+  font-size: 13px;
+}
+
+.hybridPinCard small {
+  margin-top: 4px;
+  color: rgba(226,232,240,.64);
+}
+
+.hybridPinCard strong {
+  margin-top: 6px;
+  color: var(--tone);
+  font-size: 17px;
+}
+
+.hybridPulse {
+  position: absolute;
+  z-index: 4;
+  width: 70px;
+  height: 70px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tone) 56%, transparent), color-mix(in srgb, var(--tone) 14%, transparent) 42%, transparent 70%);
+  box-shadow: 0 0 38px color-mix(in srgb, var(--tone) 38%, transparent);
+  animation: hybridEmbedPulse 2.7s ease-in-out infinite;
+}
+
+.hybridMapInsight {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 13;
+  width: 245px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 22px;
+  background: rgba(2,8,20,.72);
+  color: white;
+  padding: 16px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 25px 80px rgba(0,0,0,.32);
+}
+
+.hybridMapInsight > span {
+  color: var(--tone);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.hybridMapInsight h3 {
+  margin: 8px 0;
+  font-size: 20px;
+}
+
+.hybridMapInsight p {
+  margin: 0 0 12px;
+  color: rgba(226,232,240,.68);
+  line-height: 1.45;
+  font-size: 13px;
+}
+
+.hybridMapInsight div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--tone) 12%, transparent);
+  padding: 11px;
+}
+
+.hybridMapInsight strong {
+  color: var(--tone);
+  font-size: 22px;
+}
+
+.hybridMapInsight small {
+  color: rgba(226,232,240,.62);
+}
+
+@keyframes hybridEmbedPulse {
+  0%, 100% {
+    opacity: .5;
+    transform: translate(-50%, -50%) scale(.8);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+@media (max-width: 720px) {
+  .hybridMapEmbed {
+    min-height: 440px;
+  }
+
+  .hybridMapInsight {
+    display: none;
+  }
+
+  .hybridPinCard {
+    min-width: 115px;
+    padding: 10px;
+  }
+
+  .hybridMapHeader {
+    left: 10px;
+    right: 10px;
+    top: 10px;
+  }
+}
