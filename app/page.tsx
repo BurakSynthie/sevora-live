@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Lang = "en" | "tr" | "de";
 
@@ -15,12 +15,12 @@ const copy = {
     heroLead: "See crowds, quiet places, events, parking signals and local reports before you move.",
     primary: "Join Early Access",
     secondary: "Explore the Pulse",
-    heroNotes: ["Crowd density", "Quiet places", "Live events", "AI suggestions"],
-    pulseTitle: "A living 3D layer over the city.",
-    pulseLead: "Buildings rise, roads glow, events pulse and live signals move across the city like a living system.",
-    zones: [["Quiet Zone", "Work friendly", "28%"], ["Event Area", "Festival active", "Live"], ["Busy Center", "Crowd rising", "82%"], ["Parking Signal", "Space found", "6 min"]],
+    notes: ["Crowd density", "Quiet places", "Live events", "AI suggestions"],
+    pulseTitle: "A real 3D city layer, not a flat map.",
+    pulseLead: "Buildings rise from the grid, roads glow, events pulse and live signals move across the city like a living operating system.",
+    zones: [["Quiet Zone", "Work friendly", "28%"], ["Event Area", "Festival active", "Live"], ["Busy Center", "Crowd rising", "82%"], ["Parking", "Space found", "6 min"]],
     lifeTitle: "Know before you go.",
-    lifeLead: "SEVORA is designed for everyday decisions: where to go, when to leave, where to park and which place feels right now.",
+    lifeLead: "SEVORA helps with daily decisions: where to go, when to leave, where to park and which place feels right now.",
     lifeItems: [["Crowds", "See how busy a district feels before you arrive."], ["Quiet places", "Find calm cafés, parks and work-friendly spots."], ["Events", "Discover concerts, festivals, matches and local activity."], ["Parking", "Follow community and business signals for parking chances."], ["Queues", "Avoid long waiting lines with live reports."], ["AI advice", "Ask what makes sense based on time, weather and mood."]],
     aiTitle: "Ask the city.",
     aiLead: "The AI layer combines public APIs, user reports, business signals and prediction logic to answer practical questions.",
@@ -45,12 +45,12 @@ const copy = {
     heroLead: "Kalabalığı, sakin yerleri, etkinlikleri, park sinyallerini ve yerel bildirimleri yola çıkmadan önce gör.",
     primary: "Erken Erişime Katıl",
     secondary: "Pulse’ı Keşfet",
-    heroNotes: ["Yoğunluk", "Sakin yerler", "Canlı etkinlikler", "AI önerileri"],
-    pulseTitle: "Şehrin üzerinde yaşayan 3D bir katman.",
-    pulseLead: "Binalar yükselir, yollar parlar, etkinlikler pulse atar ve canlı sinyaller şehir üzerinde hareket eder.",
-    zones: [["Sakin Bölge", "Çalışmaya uygun", "28%"], ["Etkinlik Alanı", "Festival aktif", "Canlı"], ["Yoğun Merkez", "Kalabalık artıyor", "82%"], ["Park Sinyali", "Yer bulundu", "6 dk"]],
+    notes: ["Yoğunluk", "Sakin yerler", "Canlı etkinlikler", "AI önerileri"],
+    pulseTitle: "Düz harita değil, gerçek 3D şehir katmanı.",
+    pulseLead: "Binalar grid üzerinden yükselir, yollar parlar, etkinlikler pulse atar ve canlı sinyaller şehir üzerinde hareket eder.",
+    zones: [["Sakin Bölge", "Çalışmaya uygun", "28%"], ["Etkinlik Alanı", "Festival aktif", "Canlı"], ["Yoğun Merkez", "Kalabalık artıyor", "82%"], ["Park", "Yer bulundu", "6 dk"]],
     lifeTitle: "Gitmeden önce bil.",
-    lifeLead: "SEVORA günlük kararlar için tasarlanır: nereye gidilir, ne zaman çıkılır, nereye park edilir ve şu an hangi yer mantıklı?",
+    lifeLead: "SEVORA günlük kararlar için yardımcı olur: nereye gidilir, ne zaman çıkılır, nereye park edilir ve şu an hangi yer mantıklı?",
     lifeItems: [["Kalabalık", "Bir bölgenin ne kadar yoğun olduğunu gitmeden gör."], ["Sakin yerler", "Sessiz kafeleri, parkları ve çalışmaya uygun noktaları bul."], ["Etkinlikler", "Konserleri, festivalleri, maç günlerini ve yerel hareketi keşfet."], ["Park", "Topluluk ve işletme sinyalleriyle park ihtimalini takip et."], ["Sıra", "Canlı bildirimlerle uzun bekleme kuyruklarından kaçın."], ["AI tavsiyesi", "Saat, hava durumu ve moda göre ne mantıklı sor."]],
     aiTitle: "Şehre sor.",
     aiLead: "AI katmanı açık API verilerini, kullanıcı bildirimlerini, işletme sinyallerini ve tahmin mantığını birleştirerek pratik cevaplar üretir.",
@@ -75,10 +75,10 @@ const copy = {
     heroLead: "Sieh Menschenmengen, ruhige Orte, Events, Parksignale und lokale Meldungen, bevor du losgehst.",
     primary: "Early Access sichern",
     secondary: "Pulse entdecken",
-    heroNotes: ["Dichte", "Ruhige Orte", "Live-Events", "KI-Empfehlungen"],
-    pulseTitle: "Eine lebendige 3D-Ebene über der Stadt.",
-    pulseLead: "Gebäude steigen auf, Straßen leuchten, Events pulsieren und Live-Signale bewegen sich über die Stadt.",
-    zones: [["Ruhige Zone", "Ideal zum Arbeiten", "28%"], ["Eventbereich", "Festival aktiv", "Live"], ["Volles Zentrum", "Dichte steigt", "82%"], ["Park-Signal", "Platz gefunden", "6 Min"]],
+    notes: ["Dichte", "Ruhige Orte", "Live-Events", "KI-Empfehlungen"],
+    pulseTitle: "Keine flache Karte, sondern eine echte 3D-Stadtebene.",
+    pulseLead: "Gebäude steigen aus dem Grid, Straßen leuchten, Events pulsieren und Live-Signale bewegen sich über die Stadt.",
+    zones: [["Ruhige Zone", "Ideal zum Arbeiten", "28%"], ["Eventbereich", "Festival aktiv", "Live"], ["Volles Zentrum", "Dichte steigt", "82%"], ["Parken", "Platz gefunden", "6 Min"]],
     lifeTitle: "Wissen, bevor du gehst.",
     lifeLead: "SEVORA hilft bei täglichen Entscheidungen: wohin gehen, wann losfahren, wo parken und welcher Ort gerade passt.",
     lifeItems: [["Menschenmengen", "Sieh, wie voll ein Bereich ist, bevor du ankommst."], ["Ruhige Orte", "Finde Cafés, Parks und Orte zum Arbeiten."], ["Events", "Entdecke Konzerte, Festivals, Spieltage und lokale Aktivität."], ["Parken", "Nutze Community- und Business-Signale für Parkchancen."], ["Warteschlangen", "Vermeide lange Wartezeiten mit Live-Meldungen."], ["KI-Rat", "Frag nach Zeit, Wetter und Stimmung, was gerade sinnvoll ist."]],
@@ -98,40 +98,47 @@ const copy = {
 };
 
 const langs: Lang[] = ["en", "tr", "de"];
+const navIds = ["pulse", "life", "business", "waitlist"];
+
+function Building({ i }: { i: number }) {
+  return (
+    <span className={`building building-${(i % 24) + 1}`}>
+      <span className="face front"><i /></span>
+      <span className="face right"><i /></span>
+      <span className="face top"><i /></span>
+    </span>
+  );
+}
 
 function CityScene({ t, compact = false }: { t: typeof copy.en; compact?: boolean }) {
   return (
-    <div className={`cityScene ${compact ? "compactCity" : ""}`} aria-label="SEVORA 3D city">
+    <div className={`cityScene ${compact ? "compactCity" : ""}`}>
       <div className="cityCamera">
-        <div className="cityBase">
-          <div className="river" />
-          <div className="avenue avenueA" />
-          <div className="avenue avenueB" />
-          <div className="avenue avenueC" />
-          <div className="avenue avenueD" />
-          <div className="lightTrail trailOne" />
-          <div className="lightTrail trailTwo" />
-          <div className="lightTrail trailThree" />
+        <div className="cityFloor">
+          <div className="waterLine" />
+          <div className="road r1" />
+          <div className="road r2" />
+          <div className="road r3" />
+          <div className="road r4" />
+          <div className="carLight carA" />
+          <div className="carLight carB" />
+          <div className="carLight carC" />
 
-          {Array.from({ length: 72 }).map((_, index) => (
-            <span key={index} className={`tower tower-${(index % 18) + 1}`}>
-              <i />
-            </span>
-          ))}
+          {Array.from({ length: 96 }).map((_, i) => <Building key={i} i={i} />)}
 
-          <div className="eventZone">
+          <div className="eventDome">
             <span className="confetti c1" />
             <span className="confetti c2" />
             <span className="confetti c3" />
             <span className="confetti c4" />
             <span className="confetti c5" />
-            <strong>EVENT</strong>
+            <b>EVENT</b>
           </div>
 
           {t.zones.map((zone, index) => (
             <div className={`zone zone${index + 1}`} key={zone[0]}>
               <span className="zonePulse" />
-              <b>{zone[0]}</b>
+              <strong>{zone[0]}</strong>
               <small>{zone[1]}</small>
               <em>{zone[2]}</em>
             </div>
@@ -139,12 +146,12 @@ function CityScene({ t, compact = false }: { t: typeof copy.en; compact?: boolea
         </div>
       </div>
 
-      <div className="sceneBadge topBadge">
-        <small>3D City Layer</small>
-        <strong>Live demo pulse</strong>
+      <div className="cityBadge badgeTop">
+        <small>3D CITY LAYER</small>
+        <strong>Live signal map</strong>
       </div>
-      <div className="sceneBadge bottomBadge">
-        <small>SEVORA Engine</small>
+      <div className="cityBadge badgeBottom">
+        <small>SEVORA ENGINE</small>
         <strong>AI + Reports + Business Signals</strong>
       </div>
     </div>
@@ -153,14 +160,40 @@ function CityScene({ t, compact = false }: { t: typeof copy.en; compact?: boolea
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
+  const [active, setActive] = useState("pulse");
   const t = useMemo(() => copy[lang], [lang]);
+
+  useEffect(() => {
+    const revealItems = document.querySelectorAll(".reveal");
+    const sections = document.querySelectorAll("section[id]");
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.12 });
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+    sections.forEach((section) => sectionObserver.observe(section));
+
+    return () => {
+      revealObserver.disconnect();
+      sectionObserver.disconnect();
+    };
+  }, []);
 
   return (
     <main className="page">
-      <section className="hero sectionReveal" id="top">
-        <div className="skyGlow skyOne" />
-        <div className="skyGlow skyTwo" />
-        <div className="grain" />
+      <section className="hero" id="top">
+        <div className="sky skyA" />
+        <div className="sky skyB" />
+        <div className="gridNoise" />
 
         <header className="header">
           <a href="#top" className="brand">
@@ -171,35 +204,43 @@ export default function Home() {
             </span>
           </a>
 
-          <nav className="nav">
+          <nav className="topNav">
             <a href="#pulse">{t.navPulse}</a>
             <a href="#life">{t.navLife}</a>
             <a href="#business">{t.navBusiness}</a>
             <a href="#waitlist">{t.navWaitlist}</a>
           </nav>
 
-          <div className="langSwitch" aria-label="Language selector">
+          <div className="language">
             {langs.map((item) => (
-              <button key={item} onClick={() => setLang(item)} className={lang === item ? "active" : ""} type="button">
+              <button type="button" key={item} onClick={() => setLang(item)} className={lang === item ? "active" : ""}>
                 {item.toUpperCase()}
               </button>
             ))}
           </div>
         </header>
 
-        <div className="heroContent">
-          <div className="heroCopy">
+        <aside className="quickDock">
+          {navIds.map((id) => (
+            <a key={id} href={`#${id}`} className={active === id ? "active" : ""}>
+              {id === "pulse" ? t.navPulse : id === "life" ? t.navLife : id === "business" ? t.navBusiness : t.navWaitlist}
+            </a>
+          ))}
+        </aside>
+
+        <div className="heroGrid">
+          <div className="heroText reveal visible">
             <p className="kicker"><span /> {t.heroKicker}</p>
             <h1>{t.heroTitle}</h1>
             <p className="lead">{t.heroLead}</p>
 
             <div className="actions">
-              <a href="#waitlist" className="btn primaryBtn">{t.primary}</a>
-              <a href="#pulse" className="btn secondaryBtn">{t.secondary}</a>
+              <a href="#waitlist" className="btn primary">{t.primary}</a>
+              <a href="#pulse" className="btn ghost">{t.secondary}</a>
             </div>
 
-            <div className="miniSignals">
-              {t.heroNotes.map((note) => <span key={note}>{note}</span>)}
+            <div className="noteLine">
+              {t.notes.map((note) => <span key={note}>{note}</span>)}
             </div>
           </div>
 
@@ -207,27 +248,27 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="pulseSection sectionReveal" id="pulse">
-        <div className="sectionIntro">
+      <section className="section pulseSection" id="pulse">
+        <div className="sectionIntro reveal">
           <p>01 / CITY PULSE</p>
           <h2>{t.pulseTitle}</h2>
           <span>{t.pulseLead}</span>
         </div>
-        <div className="wideCity">
+        <div className="cityPanel reveal">
           <CityScene t={t} compact />
         </div>
       </section>
 
-      <section className="lifeSection sectionReveal" id="life">
-        <div className="sectionIntro left">
+      <section className="section lifeSection" id="life">
+        <div className="sectionIntro left reveal">
           <p>02 / DAILY LIFE</p>
           <h2>{t.lifeTitle}</h2>
           <span>{t.lifeLead}</span>
         </div>
 
-        <div className="lifeGrid">
+        <div className="accordionPanels">
           {t.lifeItems.map((item, index) => (
-            <article className="lifeCard" key={item[0]}>
+            <article className="openPanel reveal" key={item[0]}>
               <b>{String(index + 1).padStart(2, "0")}</b>
               <h3>{item[0]}</h3>
               <p>{item[1]}</p>
@@ -236,49 +277,53 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="aiSection sectionReveal">
-        <div className="aiOrb"><img src="/sevora-logo.png" alt="" /></div>
-        <div className="aiText">
+      <section className="section aiSection">
+        <div className="aiOrb reveal">
+          <img src="/sevora-logo.png" alt="" />
+        </div>
+        <div className="aiText reveal">
           <p>03 / SEVORA AI</p>
           <h2>{t.aiTitle}</h2>
           <span>{t.aiLead}</span>
-          <div className="promptList">
+          <div className="promptStack">
             {t.aiPrompts.map((prompt) => <div key={prompt}>“{prompt}”</div>)}
           </div>
         </div>
       </section>
 
-      <section className="businessSection sectionReveal" id="business">
-        <div className="businessVisual">
-          <div className="businessRing" />
-          <div className="businessPin cafe">CAFE</div>
-          <div className="businessPin food">FOOD</div>
-          <div className="businessPin wash">CAR WASH</div>
-          <div className="businessPin gym">GYM</div>
+      <section className="section businessSection" id="business">
+        <div className="businessMap reveal">
+          <span className="ring" />
+          <b className="pin cafe">CAFE</b>
+          <b className="pin food">FOOD</b>
+          <b className="pin wash">CAR WASH</b>
+          <b className="pin gym">GYM</b>
         </div>
 
-        <div className="businessText">
+        <div className="businessText reveal">
           <p>04 / BUSINESS</p>
           <h2>{t.businessTitle}</h2>
           <span>{t.businessLead}</span>
-          <div className="businessItems">
+          <div className="businessGrid">
             {t.businessItems.map((item) => <strong key={item}>{item}</strong>)}
           </div>
         </div>
       </section>
 
-      <section className="languageSection sectionReveal">
-        <p>05 / LANGUAGE</p>
-        <h2>{t.languagesTitle}</h2>
-        <span>{t.languagesLead}</span>
-        <div className="languageCards">
-          <button type="button" onClick={() => setLang("en")}>🇬🇧 English</button>
-          <button type="button" onClick={() => setLang("tr")}>🇹🇷 Türkçe</button>
-          <button type="button" onClick={() => setLang("de")}>🇩🇪 Deutsch</button>
+      <section className="section languageSection">
+        <div className="reveal">
+          <p>05 / LANGUAGE</p>
+          <h2>{t.languagesTitle}</h2>
+          <span>{t.languagesLead}</span>
+          <div className="langCards">
+            <button type="button" onClick={() => setLang("en")}>🇬🇧 English</button>
+            <button type="button" onClick={() => setLang("tr")}>🇹🇷 Türkçe</button>
+            <button type="button" onClick={() => setLang("de")}>🇩🇪 Deutsch</button>
+          </div>
         </div>
       </section>
 
-      <section className="finalSection sectionReveal" id="waitlist">
+      <section className="finalSection reveal" id="waitlist">
         <img src="/sevora-logo.png" alt="SEVORA" />
         <h2>{t.finalTitle}</h2>
         <p>{t.finalLead}</p>
@@ -288,7 +333,7 @@ export default function Home() {
         </form>
       </section>
 
-      <a href="#top" className="backTop" aria-label="Back to top">↑</a>
+      <a className="backTop" href="#top" aria-label="Back to top">↑</a>
     </main>
   );
 }
