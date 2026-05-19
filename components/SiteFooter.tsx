@@ -9,22 +9,28 @@ const legalLinks = [
   "Çerez Politikası",
 ];
 
-const paymentMethods = ["Visa", "Mastercard", "American Express", "Troy"];
+const paymentMethods = [
+  { name: "Visa", src: "/assets/payments/visa.svg" },
+  { name: "Mastercard", src: "/assets/payments/mastercard.svg" },
+  { name: "American Express", src: "/assets/payments/amex.svg" },
+  { name: "Troy", src: "/assets/payments/troy.svg" },
+];
 
-function MiniIcon({ label }: { label: string }) {
-  return <span className="footerMiniIcon">{label}</span>;
-}
+const contacts = [
+  { name: "Mail", href: "mailto:sevora.live@gmail.com", src: "/assets/social/mail.svg", value: "sevora.live@gmail.com" },
+  { name: "Instagram", href: "https://www.instagram.com/sevora.live", src: "/assets/social/instagram.svg", value: "@sevora.live" },
+  { name: "Phone", href: "tel:+905317234801", src: "/assets/social/phone.svg", value: "0531 723 48 01" },
+  { name: "Website", href: "https://sevora.live", src: "/assets/social/website.svg", value: "sevora.live" },
+];
 
 export default function SiteFooter() {
   return (
-    <footer className="siteFooter" id="contact">
+    <footer className="siteFooter siteFooterV2" id="contact">
       <div className="footerGlow" />
 
       <div className="footerTop">
         <div className="footerBrand">
-          <div className="footerLogo">
-            <span>S</span>
-          </div>
+          <img className="footerRealLogo" src="/assets/brand/sevora-s-mark.svg" alt="SEVORA" />
 
           <div>
             <strong>SEVORA</strong>
@@ -32,47 +38,39 @@ export default function SiteFooter() {
               AI-supported real-time city life assistant. Private preview is
               currently in development.
             </p>
+
+            <div className="storeBadges">
+              <button type="button" aria-label="Download on the App Store">
+                <img src="/assets/stores/app-store.svg" alt="Download on the App Store" />
+              </button>
+
+              <button type="button" aria-label="Get it on Google Play">
+                <img src="/assets/stores/google-play.svg" alt="Get it on Google Play" />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="footerContactGrid">
-          <a href="mailto:sevora.live@gmail.com" className="footerContactCard">
-            <MiniIcon label="@" />
-            <span>Email</span>
-            <strong>sevora.live@gmail.com</strong>
-          </a>
-
-          <a
-            href="https://www.instagram.com/sevora.live"
-            target="_blank"
-            rel="noreferrer"
-            className="footerContactCard"
-          >
-            <MiniIcon label="IG" />
-            <span>Instagram</span>
-            <strong>@sevora.live</strong>
-          </a>
-
-          <a href="tel:+905317234801" className="footerContactCard">
-            <MiniIcon label="☎" />
-            <span>Phone</span>
-            <strong>0531 723 48 01</strong>
-          </a>
-
-          <a href="https://sevora.live" className="footerContactCard">
-            <MiniIcon label="WWW" />
-            <span>Website</span>
-            <strong>sevora.live</strong>
-          </a>
+        <div className="footerIconContactGrid">
+          {contacts.map((item) => (
+            <a
+              href={item.href}
+              key={item.name}
+              target={item.name === "Instagram" || item.name === "Website" ? "_blank" : undefined}
+              rel={item.name === "Instagram" || item.name === "Website" ? "noreferrer" : undefined}
+              className="footerIconContactCard"
+              title={item.value}
+            >
+              <img src={item.src} alt={item.name} />
+              <span>{item.value}</span>
+            </a>
+          ))}
         </div>
       </div>
 
       <div className="footerMiddle">
         <div className="footerColumn">
-          <h3>
-            <MiniIcon label="DOC" />
-            Legal & Company
-          </h3>
+          <h3>Legal & Company</h3>
 
           <div className="footerLinks">
             {legalLinks.map((item) => (
@@ -85,30 +83,21 @@ export default function SiteFooter() {
         </div>
 
         <div className="footerColumn">
-          <h3>
-            <MiniIcon label="PAY" />
-            Payment Methods
-          </h3>
+          <h3>Payment Methods</h3>
 
           <p className="footerHint">
             Payment infrastructure will be activated after private preview.
-            Brand marks below are shown as supported payment method placeholders.
           </p>
 
-          <div className="paymentGrid">
+          <div className="realPaymentGrid">
             {paymentMethods.map((method) => (
-              <span className="paymentBadge" key={method}>
-                {method}
-              </span>
+              <img key={method.name} src={method.src} alt={method.name} />
             ))}
           </div>
         </div>
 
         <div className="footerColumn">
-          <h3>
-            <MiniIcon label="OK" />
-            Preview Notice
-          </h3>
+          <h3>Preview Notice</h3>
 
           <p className="footerHint">
             SEVORA is currently in private development. Live data, AI
