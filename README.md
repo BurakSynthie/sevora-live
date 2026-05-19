@@ -1,3 +1,3 @@
-# SEVORA Live V7
+# SEVORA Live V8
 
-Pixel-style landing page implementation based on the approved visual direction.
+Three.js powered real 3D city + animated AI orb.
