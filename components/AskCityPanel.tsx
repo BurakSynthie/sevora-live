@@ -1,7 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Brain, Sparkles, Search, MapPin } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  BrainCircuit,
+  ChevronRight,
+  Crosshair,
+  MapPin,
+  MousePointer2,
+  Route,
+  Search,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 const questions = [
   "Where can I work quietly tonight?",
@@ -13,6 +23,8 @@ const questions = [
 const answers = [
   {
     title: "3 quiet cafés found",
+    confidence: "94%",
+    route: "Best route: Moda Coast → Quiet Café Street",
     places: [
       "Moda Workspace • Calm Score 94",
       "Nook Coffee • Calm Score 91",
@@ -21,87 +33,190 @@ const answers = [
   },
   {
     title: "2 calm parks available",
-    places: [
-      "Maçka Park • Low Noise",
-      "Freedom Park • Low Density",
-    ],
+    confidence: "89%",
+    route: "Best route: Main Avenue → Green Pocket",
+    places: ["Maçka Park • Low Noise", "Freedom Park • Low Density"],
   },
   {
     title: "Live event detected",
-    places: [
-      "Festival Area • Active",
-      "Music Stage • Crowd Rising",
-    ],
+    confidence: "96%",
+    route: "Best route: Event Zone → Crowd Safe Path",
+    places: ["Festival Area • Active", "Music Stage • Crowd Rising"],
   },
+  {
+    title: "Parking signal found",
+    confidence: "87%",
+    route: "Best route: Parking Node B → 6 min walk",
+    places: ["Blue Parking • 6 min", "Side Street Lot • 9 min"],
+  },
+];
+
+const thinkingSteps = [
+  "Reading city pulse...",
+  "Checking crowd density...",
+  "Scanning calm places...",
+  "Matching route signals...",
+  "Preparing recommendation...",
 ];
 
 export default function AskCityPanel() {
   const [question, setQuestion] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [step, setStep] = useState(0);
+  const [burst, setBurst] = useState(false);
+  const coreRef = useRef<HTMLDivElement | null>(null);
+
+  const particles = useMemo(() => {
+    return Array.from({ length: 26 }, (_, index) => ({
+      id: index,
+      x: Math.sin(index * 1.7) * (70 + (index % 5) * 18),
+      y: Math.cos(index * 1.3) * (62 + (index % 4) * 16),
+      delay: `${index * 0.08}s`,
+    }));
+  }, []);
 
   useEffect(() => {
-    const rotate = setInterval(() => {
+    const rotate = window.setInterval(() => {
       setLoading(true);
+      setStep(0);
 
-      setTimeout(() => {
+      const stepTimer = window.setInterval(() => {
+        setStep((current) => (current + 1) % thinkingSteps.length);
+      }, 420);
+
+      window.setTimeout(() => {
+        window.clearInterval(stepTimer);
         setQuestion((prev) => (prev + 1) % questions.length);
         setLoading(false);
-      }, 1200);
-    }, 5000);
+      }, 1700);
+    }, 5600);
 
-    return () => clearInterval(rotate);
+    return () => window.clearInterval(rotate);
   }, []);
+
+  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    const target = coreRef.current;
+    if (!target) return;
+
+    const rect = target.getBoundingClientRect();
+    const x = event.clientX - rect.left - rect.width / 2;
+    const y = event.clientY - rect.top - rect.height / 2;
+
+    target.style.setProperty("--mx", `${x * 0.04}px`);
+    target.style.setProperty("--my", `${y * 0.04}px`);
+  }
+
+  function handleCoreClick() {
+    setBurst(true);
+    window.setTimeout(() => setBurst(false), 720);
+  }
+
+  const currentAnswer = answers[question % answers.length];
 
   return (
     <section className="askCitySection reveal" id="ask-city">
       <div className="askCityHeader">
         <span className="sectionKicker">ASK THE CITY</span>
-        <h2>Let the city answer.</h2>
+        <h2>Meet SEVORA AI Core.</h2>
         <p>
-          SEVORA combines signals, places and activity patterns
-          to guide people through everyday decisions.
+          This is not a static chatbot area. The AI core reads city signals,
+          follows your cursor and reacts like a living city intelligence layer.
         </p>
       </div>
 
-      <div className="askCityContainer">
-        <div className="askCityLeft">
-          <div className="aiCore">
-            <div className="aiRing ring1" />
-            <div className="aiRing ring2" />
-            <div className="aiRing ring3" />
+      <div className="askCityContainer askCityContainerV2">
+        <div
+          className={`askCityLeft aiCoreShell ${burst ? "burst" : ""}`}
+          onMouseMove={handleMouseMove}
+          onClick={handleCoreClick}
+          ref={coreRef}
+        >
+          <div className="aiOrbit orbitOne" />
+          <div className="aiOrbit orbitTwo" />
+          <div className="aiOrbit orbitThree" />
 
-            <div className="aiCenter">
-              <Brain size={42} />
-            </div>
+          {particles.map((particle) => (
+            <span
+              key={particle.id}
+              className="aiParticle"
+              style={{
+                ["--px" as string]: `${particle.x}px`,
+                ["--py" as string]: `${particle.y}px`,
+                ["--delay" as string]: particle.delay,
+              }}
+            />
+          ))}
+
+          <div className="aiCoreLive">
+            <div className="aiCoreGlow" />
+            <BrainCircuit size={54} />
+            <strong>SEVORA CORE</strong>
+            <small>Click / move mouse</small>
+          </div>
+
+          <div className="aiStatusPill aiStatusOne">
+            <Zap size={14} />
+            Live reasoning
+          </div>
+
+          <div className="aiStatusPill aiStatusTwo">
+            <Crosshair size={14} />
+            Signal lock
+          </div>
+
+          <div className="aiStatusPill aiStatusThree">
+            <MousePointer2 size={14} />
+            Cursor reactive
           </div>
         </div>
 
-        <div className="askCityRight">
+        <div className="askCityRight askCityRightV2">
           <div className="questionBox">
             <Search size={18} />
             <span>{questions[question]}</span>
+            <ChevronRight size={16} />
           </div>
 
-          <div className="answerBox">
+          <div className="answerBox answerBoxV2">
             {loading ? (
-              <div className="analyzing">
+              <div className="analyzingV2">
                 <Sparkles size={18} />
-                Analyzing city pulse...
+                <div>
+                  <strong>{thinkingSteps[step]}</strong>
+                  <span />
+                </div>
               </div>
             ) : (
               <>
-                <h3>{answers[question % answers.length].title}</h3>
+                <div className="answerTop">
+                  <div>
+                    <h3>{currentAnswer.title}</h3>
+                    <p>
+                      <Route size={15} />
+                      {currentAnswer.route}
+                    </p>
+                  </div>
 
-                {answers[question % answers.length].places.map(
-                  (place, index) => (
-                    <div className="placeItem" key={index}>
-                      <MapPin size={16} />
-                      {place}
-                    </div>
-                  )
-                )}
+                  <b>{currentAnswer.confidence}</b>
+                </div>
+
+                {currentAnswer.places.map((place, index) => (
+                  <div className="placeItem" key={place}>
+                    <MapPin size={16} />
+                    <span>{place}</span>
+                    <small>#{index + 1}</small>
+                  </div>
+                ))}
               </>
             )}
+          </div>
+
+          <div className="aiMiniConsole">
+            <span>AI signal stream</span>
+            <i />
+            <i />
+            <i />
+            <i />
           </div>
         </div>
       </div>
