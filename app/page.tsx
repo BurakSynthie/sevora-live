@@ -24,6 +24,7 @@ import LiveSignals from "../components/LiveSignals";
 import AskCityPanel from "../components/AskCityPanel";
 import PreviewDashboard from "../components/PreviewDashboard";
 import RoadmapShowcase from "../components/RoadmapShowcase";
+import SiteFooter from "../components/SiteFooter";
 
 const CityModel = dynamic(() => import("../components/CityModel"), {
   ssr: false,
@@ -488,6 +489,8 @@ export default function Home() {
           <small>● Private preview list is now open</small>
         </form>
       </section>
+
+      <SiteFooter />
 
       <a className="backTop" href="#home" onClick={() => handleNavClick("home")}>
         ↑
