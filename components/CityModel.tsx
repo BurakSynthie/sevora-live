@@ -9,90 +9,87 @@ export type CityMode = "night" | "day" | "work" | "event";
 
 type Zone = {
   id: string;
-  label: string;
-  sub: string;
+  title: string;
+  type: string;
+  subtitle: string;
   value: string;
+  color: string;
   x: number;
   z: number;
-  color: string;
-  icon: string;
-  score: string;
   detail: string;
 };
 
-const zoneData: Zone[] = [
+const zones: Zone[] = [
   {
     id: "park",
-    label: "Quiet Park",
-    sub: "Green calm zone",
+    title: "Yıldız Park",
+    type: "CALM",
+    subtitle: "Green quiet zone",
     value: "28%",
-    x: -7.8,
-    z: 5.4,
     color: "#22c55e",
-    icon: "PARK",
-    score: "Calm 92",
-    detail: "Low noise, low crowd and comfortable walking area.",
+    x: -8.2,
+    z: 6.7,
+    detail: "Low density park area with calm walking paths, trees and quiet score.",
   },
   {
     id: "cafe",
-    label: "Cafe Street",
-    sub: "Work friendly",
+    title: "Cafe Street",
+    type: "WORK",
+    subtitle: "Wi‑Fi + calm seats",
     value: "12 spots",
-    x: -5.4,
-    z: -4.8,
     color: "#f59e0b",
-    icon: "CAFE",
-    score: "Work 88",
-    detail: "Wi‑Fi, calm seating and good working atmosphere.",
+    x: -7.6,
+    z: -6.6,
+    detail: "Work-friendly café district with visible shop lights and calm seating signals.",
   },
   {
     id: "event",
-    label: "Event Plaza",
-    sub: "Festival active",
-    value: "LIVE",
-    x: 2.8,
-    z: -6.8,
+    title: "Event Plaza",
+    type: "LIVE",
+    subtitle: "Festival active",
+    value: "20:00",
     color: "#a855f7",
-    icon: "EVENT",
-    score: "Live 96",
-    detail: "Festival crowd, music activity and live venue signal.",
+    x: 7.2,
+    z: -6.5,
+    detail: "Live event stage with crowd movement, spot lights and activity pulse.",
   },
   {
-    id: "busy",
-    label: "Business Core",
-    sub: "Crowd rising",
+    id: "business",
+    title: "Business Core",
+    type: "BUSY",
+    subtitle: "Crowd rising",
     value: "82%",
-    x: 7.2,
-    z: -1.4,
     color: "#fb3f70",
-    icon: "HOT",
-    score: "Busy 82",
-    detail: "High density area. Alternative calm routes are suggested.",
+    x: 7.7,
+    z: 0.5,
+    detail: "Dense business district with high movement and active traffic signals.",
   },
   {
     id: "parking",
-    label: "Parking Hub",
-    sub: "Space found",
+    title: "Parking Hub",
+    type: "PARK",
+    subtitle: "Open spaces",
     value: "6 min",
-    x: 6.4,
-    z: 5.9,
     color: "#38bdf8",
-    icon: "P",
-    score: "Open 67",
-    detail: "Parking chance nearby with estimated 6 minutes walking distance.",
+    x: 7.7,
+    z: 6.4,
+    detail: "Parking area with visible parked vehicles and estimated walking distance.",
   },
 ];
 
-function modeColors(mode: CityMode) {
+function modeTheme(mode: CityMode) {
   if (mode === "day") {
     return {
-      bg: "#071426",
-      fog: "#071426",
-      cyan: "#38bdf8",
-      purple: "#818cf8",
-      road: "#111827",
+      bg: "#081528",
+      fog: "#081528",
+      ground: "#0b1728",
+      road: "#121826",
+      roadLine: "#dbeafe",
+      primary: "#38bdf8",
+      secondary: "#818cf8",
       ambient: 0.72,
-      sun: 2.4,
+      sun: 2.6,
+      windows: 0.42,
     };
   }
 
@@ -100,11 +97,14 @@ function modeColors(mode: CityMode) {
     return {
       bg: "#03131f",
       fog: "#03131f",
-      cyan: "#22d3ee",
-      purple: "#14b8a6",
+      ground: "#061320",
       road: "#0b1728",
-      ambient: 0.55,
+      roadLine: "#dbeafe",
+      primary: "#22d3ee",
+      secondary: "#14b8a6",
+      ambient: 0.52,
       sun: 1.9,
+      windows: 0.58,
     };
   }
 
@@ -112,161 +112,51 @@ function modeColors(mode: CityMode) {
     return {
       bg: "#08051a",
       fog: "#08051a",
-      cyan: "#a78bfa",
-      purple: "#fb3f70",
-      road: "#10091e",
-      ambient: 0.5,
-      sun: 1.8,
+      ground: "#080d1c",
+      road: "#120a20",
+      roadLine: "#f5d0fe",
+      primary: "#a78bfa",
+      secondary: "#fb3f70",
+      ambient: 0.48,
+      sun: 1.75,
+      windows: 0.68,
     };
   }
 
   return {
     bg: "#020814",
     fog: "#020814",
-    cyan: "#67e8f9",
-    purple: "#a855f7",
+    ground: "#050d1b",
     road: "#08111f",
-    ambient: 0.45,
-    sun: 1.7,
+    roadLine: "#dbeafe",
+    primary: "#67e8f9",
+    secondary: "#a855f7",
+    ambient: 0.43,
+    sun: 1.65,
+    windows: 0.62,
   };
 }
 
-function AnimatedCamera() {
+function CameraRig() {
   useFrame((state) => {
     const t = state.clock.elapsedTime;
-
-    state.camera.position.x +=
-      (Math.sin(t * 0.11) * 1.15 - state.camera.position.x) * 0.014;
-    state.camera.position.y +=
-      (12.2 + Math.sin(t * 0.18) * 0.28 - state.camera.position.y) * 0.014;
-    state.camera.position.z +=
-      (14.6 + Math.cos(t * 0.13) * 0.6 - state.camera.position.z) * 0.014;
-
-    state.camera.lookAt(0.5, 0, 0.1);
+    state.camera.position.x += (Math.sin(t * 0.11) * 1.25 - state.camera.position.x) * 0.012;
+    state.camera.position.y += (12.8 + Math.sin(t * 0.17) * 0.28 - state.camera.position.y) * 0.012;
+    state.camera.position.z += (14.9 + Math.cos(t * 0.13) * 0.6 - state.camera.position.z) * 0.012;
+    state.camera.lookAt(0.35, 0.2, 0.1);
   });
 
   return null;
 }
 
-function Road({
-  x,
-  z,
-  width,
-  length,
-  rotation = 0,
-  color,
-  lane = true,
-}: {
-  x: number;
-  z: number;
-  width: number;
-  length: number;
-  rotation?: number;
-  color: string;
-  lane?: boolean;
-}) {
-  return (
-    <group position={[x, 0.055, z]} rotation={[0, rotation, 0]}>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[width, length]} />
-        <meshStandardMaterial
-          color={color}
-          roughness={0.64}
-          metalness={0.28}
-          emissive="#071426"
-          emissiveIntensity={0.14}
-        />
-      </mesh>
-
-      {lane && (
-        <>
-          <Line
-            points={[
-              [0, 0.035, -length / 2 + 0.5],
-              [0, 0.035, length / 2 - 0.5],
-            ]}
-            color="#e0f2fe"
-            transparent
-            opacity={0.34}
-            lineWidth={1.2}
-          />
-          <Line
-            points={[
-              [-width / 2 + 0.13, 0.035, -length / 2 + 0.4],
-              [-width / 2 + 0.13, 0.035, length / 2 - 0.4],
-            ]}
-            color="#38bdf8"
-            transparent
-            opacity={0.18}
-            lineWidth={1}
-          />
-          <Line
-            points={[
-              [width / 2 - 0.13, 0.035, -length / 2 + 0.4],
-              [width / 2 - 0.13, 0.035, length / 2 - 0.4],
-            ]}
-            color="#38bdf8"
-            transparent
-            opacity={0.18}
-            lineWidth={1}
-          />
-        </>
-      )}
-    </group>
-  );
-}
-
-function Intersection({ x, z, color }: { x: number; z: number; color: string }) {
-  return (
-    <group position={[x, 0.07, z]}>
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[1.05, 42]} />
-        <meshStandardMaterial
-          color="#0a1220"
-          roughness={0.62}
-          metalness={0.25}
-          emissive={color}
-          emissiveIntensity={0.08}
-        />
-      </mesh>
-      <Line
-        points={[
-          [-0.7, 0.035, 0],
-          [0.7, 0.035, 0],
-        ]}
-        color="#e0f2fe"
-        transparent
-        opacity={0.28}
-        lineWidth={1}
-      />
-      <Line
-        points={[
-          [0, 0.035, -0.7],
-          [0, 0.035, 0.7],
-        ]}
-        color="#e0f2fe"
-        transparent
-        opacity={0.28}
-        lineWidth={1}
-      />
-    </group>
-  );
-}
-
 function Ground({ mode }: { mode: CityMode }) {
-  const colors = modeColors(mode);
+  const theme = modeTheme(mode);
 
   const grid = useMemo(() => {
     const lines: THREE.Vector3[][] = [];
-    for (let i = -15; i <= 15; i++) {
-      lines.push([
-        new THREE.Vector3(-15, 0.01, i),
-        new THREE.Vector3(15, 0.01, i),
-      ]);
-      lines.push([
-        new THREE.Vector3(i, 0.01, -15),
-        new THREE.Vector3(i, 0.01, 15),
-      ]);
+    for (let i = -14; i <= 14; i++) {
+      lines.push([new THREE.Vector3(-14, 0.015, i), new THREE.Vector3(14, 0.015, i)]);
+      lines.push([new THREE.Vector3(i, 0.015, -14), new THREE.Vector3(i, 0.015, 14)]);
     }
     return lines;
   }, []);
@@ -274,148 +164,168 @@ function Ground({ mode }: { mode: CityMode }) {
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[30, 30]} />
-        <meshStandardMaterial
-          color={mode === "day" ? "#0c1828" : "#050d1b"}
-          roughness={0.82}
-          metalness={0.18}
-        />
+        <planeGeometry args={[28, 28]} />
+        <meshStandardMaterial color={theme.ground} roughness={0.86} metalness={0.14} />
       </mesh>
 
-      {grid.map((points, i) => (
+      {grid.map((points, index) => (
         <Line
-          key={i}
+          key={index}
           points={points}
-          color={colors.cyan}
+          color={theme.primary}
           transparent
-          opacity={0.08}
+          opacity={0.06}
           lineWidth={0.42}
         />
       ))}
 
-      <Road x={0} z={-3.8} width={1.7} length={28} rotation={Math.PI / 2} color={colors.road} />
-      <Road x={0} z={4.7} width={1.55} length={27} rotation={Math.PI / 2} color={colors.road} />
-      <Road x={-4.8} z={0} width={1.45} length={27} color={colors.road} />
-      <Road x={4.9} z={0} width={1.45} length={27} color={colors.road} />
-      <Road x={0.8} z={0.3} width={1.2} length={19} rotation={0.63} color={colors.road} />
-      <Road x={-1.6} z={0.7} width={1.1} length={18} rotation={-0.55} color={colors.road} />
+      <RoadEW z={-4.6} length={25.5} width={1.42} theme={theme} name="Main Avenue" />
+      <RoadEW z={4.4} length={25.0} width={1.32} theme={theme} name="North Boulevard" />
+      <RoadNS x={-4.7} length={24.8} width={1.34} theme={theme} name="West Road" />
+      <RoadNS x={4.8} length={24.8} width={1.34} theme={theme} name="East Road" />
 
-      <Intersection x={-4.8} z={-3.8} color={colors.cyan} />
-      <Intersection x={4.9} z={-3.8} color={colors.purple} />
-      <Intersection x={-4.8} z={4.7} color={colors.cyan} />
-      <Intersection x={4.9} z={4.7} color={colors.purple} />
+      <RoadCurve theme={theme} />
+      <Crosswalk x={-4.7} z={-4.6} />
+      <Crosswalk x={4.8} z={-4.6} />
+      <Crosswalk x={-4.7} z={4.4} />
+      <Crosswalk x={4.8} z={4.4} />
 
-      <HeatPatch x={7.2} z={-1.4} color="#fb3f70" />
-      <HeatPatch x={-7.8} z={5.4} color="#22c55e" />
-      <HeatPatch x={2.8} z={-6.8} color="#a855f7" />
+      <DistrictGround x={-8.2} z={6.7} w={4.7} d={3.8} color="#052e1c" />
+      <DistrictGround x={-7.6} z={-6.6} w={4.7} d={3.5} color="#261404" />
+      <DistrictGround x={7.2} z={-6.5} w={4.5} d={3.5} color="#170f2e" />
+      <DistrictGround x={7.7} z={6.4} w={4.3} d={3.3} color="#071526" />
+    </group>
+  );
+}
 
-      <mesh position={[-7.8, 0.065, 5.4]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[2.15, 64]} />
+function RoadEW({
+  z,
+  length,
+  width,
+  theme,
+  name,
+}: {
+  z: number;
+  length: number;
+  width: number;
+  theme: ReturnType<typeof modeTheme>;
+  name: string;
+}) {
+  return (
+    <group position={[0, 0.06, z]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[length, width]} />
         <meshStandardMaterial
-          color="#052e1c"
-          roughness={0.78}
-          metalness={0.08}
-          emissive="#064e3b"
-          emissiveIntensity={0.2}
+          color={theme.road}
+          roughness={0.68}
+          metalness={0.22}
+          emissive="#061426"
+          emissiveIntensity={0.15}
         />
       </mesh>
 
-      <mesh position={[6.4, 0.07, 5.9]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[3.8, 2.55]} />
+      <Line points={[[-length / 2 + 0.5, 0.04, 0], [length / 2 - 0.5, 0.04, 0]]} color={theme.roadLine} transparent opacity={0.38} lineWidth={1.1} />
+      <Line points={[[-length / 2 + 0.5, 0.04, -width / 2 + 0.12], [length / 2 - 0.5, 0.04, -width / 2 + 0.12]]} color={theme.primary} transparent opacity={0.22} lineWidth={1} />
+      <Line points={[[-length / 2 + 0.5, 0.04, width / 2 - 0.12], [length / 2 - 0.5, 0.04, width / 2 - 0.12]]} color={theme.primary} transparent opacity={0.22} lineWidth={1} />
+
+      <Html position={[-length / 2 + 2.3, 0.09, -width / 2 - 0.35]} transform rotation={[-Math.PI / 2, 0, 0]} distanceFactor={8}>
+        <div className="roadName">{name}</div>
+      </Html>
+    </group>
+  );
+}
+
+function RoadNS({
+  x,
+  length,
+  width,
+  theme,
+  name,
+}: {
+  x: number;
+  length: number;
+  width: number;
+  theme: ReturnType<typeof modeTheme>;
+  name: string;
+}) {
+  return (
+    <group position={[x, 0.065, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[width, length]} />
         <meshStandardMaterial
-          color="#071526"
-          roughness={0.7}
-          metalness={0.25}
-          emissive="#082f49"
-          emissiveIntensity={0.18}
+          color={theme.road}
+          roughness={0.68}
+          metalness={0.22}
+          emissive="#061426"
+          emissiveIntensity={0.15}
         />
       </mesh>
 
-      {Array.from({ length: 7 }).map((_, i) => (
-        <Line
-          key={`parking-${i}`}
-          points={[
-            [4.95 + i * 0.42, 0.095, 4.72],
-            [4.95 + i * 0.42, 0.095, 7.05],
-          ]}
-          color="#60a5fa"
-          transparent
-          opacity={0.55}
-          lineWidth={1}
-        />
+      <Line points={[[0, 0.04, -length / 2 + 0.5], [0, 0.04, length / 2 - 0.5]]} color={theme.roadLine} transparent opacity={0.38} lineWidth={1.1} />
+      <Line points={[[-width / 2 + 0.12, 0.04, -length / 2 + 0.5], [-width / 2 + 0.12, 0.04, length / 2 - 0.5]]} color={theme.primary} transparent opacity={0.22} lineWidth={1} />
+      <Line points={[[width / 2 - 0.12, 0.04, -length / 2 + 0.5], [width / 2 - 0.12, 0.04, length / 2 - 0.5]]} color={theme.primary} transparent opacity={0.22} lineWidth={1} />
+
+      <Html position={[width / 2 + 0.36, 0.09, -length / 2 + 2.6]} transform rotation={[-Math.PI / 2, 0, Math.PI / 2]} distanceFactor={8}>
+        <div className="roadName">{name}</div>
+      </Html>
+    </group>
+  );
+}
+
+function RoadCurve({ theme }: { theme: ReturnType<typeof modeTheme> }) {
+  const points = [
+    new THREE.Vector3(-12.2, 0.115, 0.4),
+    new THREE.Vector3(-8.0, 0.115, -1.0),
+    new THREE.Vector3(-2.0, 0.115, 0.8),
+    new THREE.Vector3(3.2, 0.115, 1.1),
+    new THREE.Vector3(11.9, 0.115, -0.5),
+  ];
+
+  return (
+    <group>
+      <Line points={points} color={theme.secondary} transparent opacity={0.34} lineWidth={6.5} />
+      <Line points={points} color={theme.primary} transparent opacity={0.55} lineWidth={1.6} />
+    </group>
+  );
+}
+
+function Crosswalk({ x, z }: { x: number; z: number }) {
+  return (
+    <group position={[x, 0.13, z]}>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <mesh key={index} position={[-0.45 + index * 0.22, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.08, 0.9]} />
+          <meshBasicMaterial color="#e2e8f0" transparent opacity={0.42} />
+        </mesh>
       ))}
     </group>
   );
 }
 
-function HeatPatch({
+function DistrictGround({
   x,
   z,
+  w,
+  d,
   color,
 }: {
   x: number;
   z: number;
+  w: number;
+  d: number;
   color: string;
 }) {
-  const ref = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (!ref.current) return;
-    const s = 1 + Math.sin(state.clock.elapsedTime * 1.35 + x) * 0.06;
-    ref.current.scale.set(s, s, s);
-  });
-
   return (
-    <mesh ref={ref} position={[x, 0.075, z]} rotation={[-Math.PI / 2, 0, 0]}>
-      <circleGeometry args={[2.25, 64]} />
-      <meshBasicMaterial color={color} transparent opacity={0.1} depthWrite={false} />
+    <mesh position={[x, 0.05, z]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[w, d]} />
+      <meshStandardMaterial
+        color={color}
+        roughness={0.8}
+        metalness={0.12}
+        emissive={color}
+        emissiveIntensity={0.18}
+      />
     </mesh>
-  );
-}
-
-function DistrictLabel({
-  title,
-  x,
-  z,
-  color,
-}: {
-  title: string;
-  x: number;
-  z: number;
-  color: string;
-}) {
-  return (
-    <Html position={[x, 0.12, z]} transform rotation={[-Math.PI / 2, 0, 0]} distanceFactor={8}>
-      <div className="districtLabel" style={{ ["--district" as string]: color }}>
-        {title}
-      </div>
-    </Html>
-  );
-}
-
-function CitySign({
-  text,
-  x,
-  z,
-  color,
-}: {
-  text: string;
-  x: number;
-  z: number;
-  color: string;
-}) {
-  return (
-    <group position={[x, 0, z]}>
-      <mesh position={[0, 0.35, 0]}>
-        <cylinderGeometry args={[0.025, 0.025, 0.7, 8]} />
-        <meshStandardMaterial color="#94a3b8" roughness={0.5} metalness={0.4} />
-      </mesh>
-      <Html position={[0, 0.84, 0]} center transform distanceFactor={8}>
-        <div className="citySign" style={{ ["--sign" as string]: color }}>
-          {text}
-        </div>
-      </Html>
-    </group>
   );
 }
 
@@ -425,6 +335,8 @@ function Building({
   h,
   w,
   d,
+  kind,
+  color,
   seed,
   onSelect,
 }: {
@@ -433,82 +345,76 @@ function Building({
   h: number;
   w: number;
   d: number;
+  kind: string;
+  color: string;
   seed: number;
   onSelect: (text: string) => void;
 }) {
-  const baseColor =
-    seed % 5 === 0 ? "#0c2746" : seed % 3 === 0 ? "#10243d" : "#071426";
-  const roofColor =
-    seed % 4 === 0 ? "#67e8f9" : seed % 6 === 0 ? "#a78bfa" : "#1e40af";
-  const kind =
-    seed % 11 === 0
-      ? "Hotel"
-      : seed % 7 === 0
-        ? "Office Tower"
-        : seed % 5 === 0
-          ? "Residence"
-          : "City Block";
-
-  const windows = Math.max(2, Math.floor(h * 2.4));
+  const windowColor = seed % 4 === 0 ? "#fde68a" : seed % 3 === 0 ? "#93c5fd" : "#67e8f9";
+  const roofColor = seed % 5 === 0 ? "#a78bfa" : "#38bdf8";
+  const floors = Math.max(2, Math.floor(h * 2.4));
 
   return (
     <group
       position={[x, h / 2, z]}
       onClick={(event) => {
         event.stopPropagation();
-        onSelect(`${kind} · Density ${42 + (seed % 51)}% · Live signal active`);
+        onSelect(`${kind} · Activity ${45 + (seed % 45)}% · Live signal active`);
       }}
     >
       <mesh castShadow receiveShadow>
         <boxGeometry args={[w, h, d]} />
         <meshStandardMaterial
-          color={baseColor}
-          metalness={0.42}
-          roughness={0.42}
-          emissive="#06192c"
-          emissiveIntensity={0.24}
+          color={color}
+          roughness={0.35}
+          metalness={0.48}
+          emissive="#061426"
+          emissiveIntensity={0.22}
         />
       </mesh>
 
-      <mesh position={[0, h / 2 + 0.018, 0]}>
-        <boxGeometry args={[w + 0.05, 0.035, d + 0.05]} />
-        <meshBasicMaterial
-          color={roofColor}
-          transparent
-          opacity={seed % 4 === 0 ? 0.76 : 0.42}
-        />
+      <mesh position={[0, h / 2 + 0.02, 0]}>
+        <boxGeometry args={[w + 0.06, 0.04, d + 0.06]} />
+        <meshBasicMaterial color={roofColor} transparent opacity={0.48} />
       </mesh>
 
-      {Array.from({ length: windows }).map((_, i) => (
-        <group key={i}>
-          <mesh position={[w / 2 + 0.006, -h / 2 + 0.34 + i * 0.36, -d * 0.24]}>
-            <planeGeometry args={[0.012, 0.11]} />
-            <meshBasicMaterial
-              color={seed % 7 === 0 ? "#fde68a" : "#67e8f9"}
-              transparent
-              opacity={0.52}
-            />
-          </mesh>
+      {Array.from({ length: floors }).map((_, floor) => (
+        <group key={floor}>
+          {Array.from({ length: Math.max(2, Math.floor(w * 3)) }).map((_, col) => (
+            <mesh
+              key={`front-${floor}-${col}`}
+              position={[-w / 2 + 0.18 + col * 0.22, -h / 2 + 0.32 + floor * 0.34, d / 2 + 0.006]}
+              rotation={[0, 0, 0]}
+            >
+              <planeGeometry args={[0.08, 0.085]} />
+              <meshBasicMaterial color={windowColor} transparent opacity={0.38 + (seed % 3) * 0.06} />
+            </mesh>
+          ))}
 
-          <mesh position={[w / 2 + 0.006, -h / 2 + 0.34 + i * 0.36, d * 0.24]}>
-            <planeGeometry args={[0.012, 0.11]} />
-            <meshBasicMaterial color="#93c5fd" transparent opacity={0.34} />
-          </mesh>
-
-          <mesh
-            position={[-w * 0.24, -h / 2 + 0.34 + i * 0.36, d / 2 + 0.006]}
-            rotation={[0, Math.PI / 2, 0]}
-          >
-            <planeGeometry args={[0.012, 0.11]} />
-            <meshBasicMaterial color="#67e8f9" transparent opacity={0.3} />
-          </mesh>
+          {Array.from({ length: Math.max(2, Math.floor(d * 3)) }).map((_, col) => (
+            <mesh
+              key={`side-${floor}-${col}`}
+              position={[w / 2 + 0.006, -h / 2 + 0.32 + floor * 0.34, -d / 2 + 0.18 + col * 0.22]}
+              rotation={[0, Math.PI / 2, 0]}
+            >
+              <planeGeometry args={[0.08, 0.085]} />
+              <meshBasicMaterial color={windowColor} transparent opacity={0.3} />
+            </mesh>
+          ))}
         </group>
       ))}
 
-      {seed % 6 === 0 && (
-        <mesh position={[0, -h / 2 + 0.34, d / 2 + 0.012]} rotation={[0, 0, 0]}>
-          <planeGeometry args={[w * 0.6, 0.12]} />
+      {kind === "Hotel" && (
+        <mesh position={[0, -h / 2 + 0.35, d / 2 + 0.012]}>
+          <planeGeometry args={[w * 0.65, 0.16]} />
           <meshBasicMaterial color="#f59e0b" transparent opacity={0.78} />
+        </mesh>
+      )}
+
+      {kind === "Mall" && (
+        <mesh position={[0, -h / 2 + 0.55, d / 2 + 0.012]}>
+          <planeGeometry args={[w * 0.78, 0.22]} />
+          <meshBasicMaterial color="#fb7185" transparent opacity={0.7} />
         </mesh>
       )}
     </group>
@@ -516,63 +422,47 @@ function Building({
 }
 
 function Buildings({ onSelect }: { onSelect: (text: string) => void }) {
-  const buildings = useMemo(() => {
-    const positions: { x: number; z: number; h: number; w: number; d: number; seed: number }[] = [];
-    let seed = 1;
+  const blocks = [
+    [-11.0, -8.7, 2.4, 1.0, 0.85, "Residence", "#071426"],
+    [-9.2, -8.9, 3.2, 0.86, 0.86, "Hotel", "#10243d"],
+    [-2.4, -8.6, 2.8, 1.05, 0.92, "Office", "#0c2746"],
+    [-0.8, -8.8, 4.4, 0.86, 0.86, "Office Tower", "#10243d"],
+    [2.2, -8.5, 2.2, 1.2, 0.86, "Mall", "#0b1728"],
 
-    const blocks = [
-      [-10, -9],
-      [-8.4, -8.6],
-      [-7.0, -8.2],
-      [-1.4, -8.1],
-      [0.1, -8.5],
-      [5.9, -8.2],
-      [7.7, -8.7],
-      [9.4, -7.9],
-      [-10.2, -1.7],
-      [-8.7, -1.2],
-      [-6.9, -1.5],
-      [-1.2, -1.2],
-      [1.0, -1.7],
-      [7.4, -1.4],
-      [9.1, -1.0],
-      [-10, 1.8],
-      [-7.9, 1.5],
-      [-1.1, 1.6],
-      [0.9, 1.2],
-      [7.0, 1.6],
-      [9.3, 1.2],
-      [-10.1, 8.1],
-      [-8.4, 8.7],
-      [-2.2, 8.4],
-      [-0.4, 8.0],
-      [2.0, 8.5],
-      [9.3, 8.2],
-    ];
+    [-11.2, -1.5, 2.3, 0.98, 0.88, "Residence", "#071426"],
+    [-9.4, -1.4, 3.0, 0.9, 0.88, "Office", "#0c2746"],
+    [-1.8, -1.5, 3.6, 0.88, 0.88, "Office Tower", "#10243d"],
+    [1.5, -1.4, 2.5, 1.08, 0.9, "Mall", "#0b1728"],
+    [7.0, -1.2, 5.1, 0.9, 0.9, "Office Tower", "#10243d"],
+    [8.7, -1.0, 4.2, 0.9, 0.9, "Office Tower", "#0c2746"],
+    [10.3, -1.5, 3.3, 1.0, 0.9, "Business", "#071426"],
 
-    for (const [x, z] of blocks) {
-      const dist = Math.sqrt(x * x + z * z);
-      const coreBoost = x > 5 && z > -2.8 && z < 2.8 ? 1.7 : 0;
-      const h = 0.9 + ((Math.sin(x * 1.7 + z * 2.1) + 1) / 2) * 3.3 + coreBoost;
-      const w = 0.72 + (seed % 3) * 0.18;
-      const d = 0.72 + (seed % 4) * 0.14;
-      positions.push({ x, z, h, w, d, seed: seed++ });
-    }
+    [-11.1, 1.7, 2.4, 0.96, 0.86, "Residence", "#071426"],
+    [-9.2, 1.7, 2.9, 0.9, 0.9, "Hotel", "#10243d"],
+    [-1.8, 1.5, 3.8, 0.88, 0.88, "Office Tower", "#10243d"],
+    [1.4, 1.4, 2.6, 1.0, 0.9, "Residence", "#071426"],
+    [7.0, 1.5, 5.0, 0.92, 0.92, "Office Tower", "#10243d"],
+    [8.8, 1.6, 4.4, 0.9, 0.9, "Office Tower", "#0c2746"],
+    [10.6, 1.3, 3.4, 1.0, 0.9, "Business", "#071426"],
 
-    return positions;
-  }, []);
+    [-2.4, 8.3, 2.0, 1.2, 0.9, "Residence", "#071426"],
+    [-0.6, 8.5, 3.1, 0.9, 0.88, "Hotel", "#10243d"],
+    [2.0, 8.2, 2.5, 1.15, 0.88, "Mall", "#0b1728"],
+  ] as const;
 
   return (
     <group>
-      {buildings.map((b) => (
+      {blocks.map(([x, z, h, w, d, kind, color], index) => (
         <Building
-          key={`${b.x}-${b.z}`}
-          x={b.x}
-          z={b.z}
-          h={b.h}
-          w={b.w}
-          d={b.d}
-          seed={b.seed}
+          key={`${x}-${z}`}
+          x={x}
+          z={z}
+          h={h}
+          w={w}
+          d={d}
+          kind={kind}
+          color={color}
+          seed={index + 1}
           onSelect={onSelect}
         />
       ))}
@@ -585,17 +475,11 @@ function Tree({ x, z, scale = 1 }: { x: number; z: number; scale?: number }) {
     <group position={[x, 0, z]} scale={scale}>
       <mesh position={[0, 0.22, 0]}>
         <cylinderGeometry args={[0.035, 0.05, 0.45, 8]} />
-        <meshStandardMaterial color="#3f2a17" roughness={0.7} />
+        <meshStandardMaterial color="#3f2a17" roughness={0.72} />
       </mesh>
-
       <mesh position={[0, 0.62, 0]}>
         <coneGeometry args={[0.28, 0.7, 10]} />
-        <meshStandardMaterial
-          color="#15803d"
-          roughness={0.75}
-          emissive="#064e3b"
-          emissiveIntensity={0.2}
-        />
+        <meshStandardMaterial color="#15803d" roughness={0.75} emissive="#064e3b" emissiveIntensity={0.18} />
       </mesh>
     </group>
   );
@@ -620,20 +504,16 @@ function CafeBlock({
     >
       <mesh position={[0, 0.28, 0]} castShadow>
         <boxGeometry args={[0.82, 0.56, 0.72]} />
-        <meshStandardMaterial
-          color="#28170a"
-          roughness={0.5}
-          emissive="#7c2d12"
-          emissiveIntensity={0.3}
-        />
+        <meshStandardMaterial color="#28170a" roughness={0.5} emissive="#7c2d12" emissiveIntensity={0.3} />
       </mesh>
-
       <mesh position={[0, 0.58, 0]}>
         <boxGeometry args={[0.96, 0.05, 0.86]} />
         <meshBasicMaterial color="#f59e0b" transparent opacity={0.78} />
       </mesh>
-
-      <pointLight position={[0, 0.9, 0]} color="#f59e0b" intensity={1.35} distance={2.2} />
+      <Html position={[0, 0.92, 0]} center transform distanceFactor={8}>
+        <div className="mini3DSign cafeSign">CAFÉ</div>
+      </Html>
+      <pointLight position={[0, 1.0, 0]} color="#f59e0b" intensity={1.45} distance={2.3} />
     </group>
   );
 }
@@ -641,51 +521,49 @@ function CafeBlock({
 function EventStage({ onSelect }: { onSelect: (text: string) => void }) {
   return (
     <group
-      position={[2.8, 0, -6.8]}
+      position={[7.2, 0, -6.5]}
       onClick={(event) => {
         event.stopPropagation();
         onSelect("Event Plaza · Festival active · Crowd growing");
       }}
     >
       <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[1.55, 48]} />
-        <meshBasicMaterial color="#7c3aed" transparent opacity={0.22} />
+        <circleGeometry args={[1.62, 56]} />
+        <meshBasicMaterial color="#7c3aed" transparent opacity={0.24} />
       </mesh>
-
       <mesh position={[0, 0.32, 0]} castShadow>
-        <boxGeometry args={[1.75, 0.48, 0.9]} />
-        <meshStandardMaterial color="#18132f" emissive="#7c3aed" emissiveIntensity={0.4} />
+        <boxGeometry args={[1.9, 0.5, 0.95]} />
+        <meshStandardMaterial color="#18132f" emissive="#7c3aed" emissiveIntensity={0.42} />
       </mesh>
-
-      <mesh position={[0, 0.95, -0.45]}>
-        <boxGeometry args={[1.45, 0.55, 0.06]} />
-        <meshBasicMaterial color="#a855f7" transparent opacity={0.78} />
+      <mesh position={[0, 0.98, -0.52]}>
+        <boxGeometry args={[1.55, 0.58, 0.06]} />
+        <meshBasicMaterial color="#a855f7" transparent opacity={0.82} />
       </mesh>
-
-      <pointLight position={[0, 1.3, 0]} color="#a855f7" intensity={6} distance={5.2} />
-      <pointLight position={[0.85, 1.1, -0.4]} color="#fde047" intensity={2.7} distance={4.2} />
-
-      <Sparkles count={90} speed={0.72} scale={[2.6, 1.9, 2.6]} size={1.8} color="#fde047" opacity={0.66} />
+      <mesh position={[-0.8, 0.76, 0.42]} rotation={[0, 0.3, 0]}>
+        <coneGeometry args={[0.08, 1.6, 18]} />
+        <meshBasicMaterial color="#fde047" transparent opacity={0.22} />
+      </mesh>
+      <mesh position={[0.8, 0.76, 0.42]} rotation={[0, -0.3, 0]}>
+        <coneGeometry args={[0.08, 1.6, 18]} />
+        <meshBasicMaterial color="#fb7185" transparent opacity={0.22} />
+      </mesh>
+      <Html position={[0, 1.42, 0]} center transform distanceFactor={8}>
+        <div className="mini3DSign eventSign">LIVE EVENT</div>
+      </Html>
+      <pointLight position={[0, 1.4, 0]} color="#a855f7" intensity={6.3} distance={5.4} />
+      <pointLight position={[0.9, 1.2, -0.45]} color="#fde047" intensity={2.9} distance={4.4} />
+      <Sparkles count={95} speed={0.78} scale={[2.8, 2.0, 2.8]} size={1.8} color="#fde047" opacity={0.66} />
     </group>
   );
 }
 
-function Person({
-  x,
-  z,
-  color = "#f8fafc",
-}: {
-  x: number;
-  z: number;
-  color?: string;
-}) {
+function Person({ x, z, color = "#f8fafc" }: { x: number; z: number; color?: string }) {
   return (
     <group position={[x, 0, z]}>
       <mesh position={[0, 0.16, 0]}>
         <capsuleGeometry args={[0.045, 0.18, 4, 8]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.08} />
       </mesh>
-
       <mesh position={[0, 0.34, 0]}>
         <sphereGeometry args={[0.06, 8, 8]} />
         <meshStandardMaterial color="#f8fafc" />
@@ -697,132 +575,41 @@ function Person({
 function Car({
   color = "#38bdf8",
   type = "sedan",
-  direction = 0,
+  rotation = 0,
 }: {
   color?: string;
   type?: "sedan" | "taxi" | "bus" | "ev";
-  direction?: number;
+  rotation?: number;
 }) {
   const isBus = type === "bus";
   const isTaxi = type === "taxi";
 
   return (
-    <group rotation={[0, direction, 0]} scale={isBus ? 1.18 : 1}>
+    <group rotation={[0, rotation, 0]} scale={isBus ? 1.18 : 1}>
       <mesh position={[0, 0.14, 0]}>
-        <boxGeometry args={isBus ? [0.82, 0.24, 0.32] : [0.48, 0.17, 0.24]} />
+        <boxGeometry args={isBus ? [0.86, 0.24, 0.32] : [0.52, 0.17, 0.25]} />
         <meshStandardMaterial
           color={isTaxi ? "#facc15" : "#0f172a"}
-          roughness={0.35}
-          metalness={0.45}
+          roughness={0.34}
+          metalness={0.48}
           emissive={color}
           emissiveIntensity={0.08}
         />
       </mesh>
-
       {!isBus && (
         <mesh position={[0.1, 0.26, 0]}>
-          <boxGeometry args={[0.21, 0.11, 0.18]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.55} />
+          <boxGeometry args={[0.22, 0.11, 0.18]} />
+          <meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.58} />
         </mesh>
       )}
-
-      <mesh position={[isBus ? 0.44 : 0.27, 0.15, -0.085]}>
-        <boxGeometry args={[0.05, 0.028, 0.036]} />
+      <mesh position={[isBus ? 0.47 : 0.29, 0.15, -0.088]}>
+        <boxGeometry args={[0.052, 0.028, 0.038]} />
         <meshBasicMaterial color={type === "ev" ? "#67e8f9" : color} />
       </mesh>
-
-      <mesh position={[isBus ? 0.44 : 0.27, 0.15, 0.085]}>
-        <boxGeometry args={[0.05, 0.028, 0.036]} />
+      <mesh position={[isBus ? 0.47 : 0.29, 0.15, 0.088]}>
+        <boxGeometry args={[0.052, 0.028, 0.038]} />
         <meshBasicMaterial color={type === "ev" ? "#67e8f9" : color} />
       </mesh>
-    </group>
-  );
-}
-
-function ParkingLotCars() {
-  const cars = [
-    [5.25, 5.05, "#38bdf8", "sedan"],
-    [5.85, 6.65, "#a78bfa", "ev"],
-    [6.55, 5.25, "#f8fafc", "sedan"],
-    [7.15, 6.65, "#fb7185", "sedan"],
-    [7.85, 5.25, "#f59e0b", "taxi"],
-  ] as const;
-
-  return (
-    <group>
-      {cars.map(([x, z, c, type], i) => (
-        <group key={i} position={[x, 0.1, z]}>
-          <Car color={c} type={type} direction={Math.PI / 2} />
-        </group>
-      ))}
-    </group>
-  );
-}
-
-function CityDetails({ onSelect }: { onSelect: (text: string) => void }) {
-  const parkTrees = [
-    [-8.9, 4.6],
-    [-8.2, 5.7],
-    [-7.4, 4.8],
-    [-6.7, 6.3],
-    [-8.8, 6.8],
-    [-6.4, 5.3],
-    [-7.6, 6.9],
-    [-5.9, 4.5],
-    [-9.3, 5.7],
-    [-7.1, 5.8],
-  ];
-
-  const streetTrees = [
-    [-10.8, -2.8],
-    [-9.6, -2.6],
-    [-7.2, -2.2],
-    [6.2, 4.0],
-    [8.2, 4.0],
-    [9.6, 4.1],
-    [-4.9, -5.8],
-    [-4.1, -5.4],
-  ];
-
-  const people: [number, number, string][] = [
-    [-7.6, 5.2, "#86efac"],
-    [-6.7, 5.7, "#f8fafc"],
-    [-5.1, -4.5, "#fbbf24"],
-    [2.5, -6.6, "#c4b5fd"],
-    [3.2, -7.0, "#fb7185"],
-    [7.0, -1.0, "#f8fafc"],
-  ];
-
-  return (
-    <group>
-      {parkTrees.map(([x, z], i) => (
-        <Tree key={`park-${i}`} x={x} z={z} scale={1.16} />
-      ))}
-
-      {streetTrees.map(([x, z], i) => (
-        <Tree key={`street-${i}`} x={x} z={z} scale={0.72} />
-      ))}
-
-      {people.map(([x, z, c], i) => (
-        <Person key={i} x={x} z={z} color={c} />
-      ))}
-
-      <CafeBlock x={-6.0} z={-5.05} onSelect={onSelect} />
-      <CafeBlock x={-5.1} z={-5.6} onSelect={onSelect} />
-      <CafeBlock x={-4.3} z={-4.9} onSelect={onSelect} />
-
-      <EventStage onSelect={onSelect} />
-      <ParkingLotCars />
-
-      <DistrictLabel title="GREEN DISTRICT" x={-8.0} z={7.8} color="#22c55e" />
-      <DistrictLabel title="CAFE STREET" x={-5.2} z={-6.8} color="#f59e0b" />
-      <DistrictLabel title="EVENT PLAZA" x={2.7} z={-8.6} color="#a855f7" />
-      <DistrictLabel title="BUSINESS CORE" x={8.2} z={0.8} color="#fb3f70" />
-
-      <CitySign text="PARK" x={-6.1} z={4.15} color="#22c55e" />
-      <CitySign text="CAFE" x={-4.2} z={-5.9} color="#f59e0b" />
-      <CitySign text="EVENT" x={4.0} z={-6.4} color="#a855f7" />
-      <CitySign text="P" x={4.7} z={5.0} color="#38bdf8" />
     </group>
   );
 }
@@ -839,58 +626,155 @@ function MovingVehicles() {
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
+    const p1 = ((t * 0.9) % 22) - 11;
+    const p2 = 11 - ((t * 0.78) % 22);
+    const p3 = ((t * 0.82) % 22) - 11;
+    const p4 = 11 - ((t * 0.72) % 22);
+    const p5 = ((t * 0.62) % 22) - 11;
+    const p6 = 11 - ((t * 0.66) % 22);
 
-    refs.forEach((ref, i) => {
-      if (!ref.current) return;
-
-      const speed = 0.72 + i * 0.13;
-      const p = ((t * speed + i * 3.2) % 24) - 12;
-
-      if (i === 0) {
-        ref.current.position.set(p, 0.12, -3.8);
-        ref.current.rotation.y = Math.PI / 2;
-      } else if (i === 1) {
-        ref.current.position.set(-p, 0.12, 4.7);
-        ref.current.rotation.y = -Math.PI / 2;
-      } else if (i === 2) {
-        ref.current.position.set(-4.8, 0.12, p);
-        ref.current.rotation.y = 0;
-      } else if (i === 3) {
-        ref.current.position.set(4.9, 0.12, -p);
-        ref.current.rotation.y = Math.PI;
-      } else if (i === 4) {
-        ref.current.position.set(p * 0.72, 0.12, -0.55 + Math.sin(t + i) * 0.55);
-        ref.current.rotation.y = Math.PI / 2;
-      } else {
-        ref.current.position.set(-p * 0.72, 0.12, 1.0 + Math.cos(t + i) * 0.45);
-        ref.current.rotation.y = -Math.PI / 2;
-      }
-    });
+    if (refs[0].current) refs[0].current.position.set(p1, 0.12, -4.2);
+    if (refs[1].current) refs[1].current.position.set(p2, 0.12, -5.0);
+    if (refs[2].current) refs[2].current.position.set(p3, 0.12, 4.05);
+    if (refs[3].current) refs[3].current.position.set(4.35, 0.12, p4);
+    if (refs[4].current) refs[4].current.position.set(5.25, 0.12, p5);
+    if (refs[5].current) refs[5].current.position.set(-5.15, 0.12, p6);
   });
-
-  const colors = ["#67e8f9", "#a78bfa", "#f8fafc", "#fb7185", "#f59e0b", "#22c55e"];
-  const types: ("sedan" | "taxi" | "bus" | "ev")[] = [
-    "sedan",
-    "ev",
-    "sedan",
-    "taxi",
-    "bus",
-    "sedan",
-  ];
 
   return (
     <group>
-      {refs.map((ref, i) => (
-        <group key={i} ref={ref}>
-          <Car color={colors[i]} type={types[i]} />
-          <pointLight color={colors[i]} intensity={0.65} distance={1.45} />
+      <group ref={refs[0]}>
+        <Car color="#67e8f9" type="sedan" rotation={0} />
+      </group>
+      <group ref={refs[1]}>
+        <Car color="#f59e0b" type="taxi" rotation={Math.PI} />
+      </group>
+      <group ref={refs[2]}>
+        <Car color="#a78bfa" type="ev" rotation={0} />
+      </group>
+      <group ref={refs[3]}>
+        <Car color="#fb7185" type="sedan" rotation={-Math.PI / 2} />
+      </group>
+      <group ref={refs[4]}>
+        <Car color="#f8fafc" type="bus" rotation={Math.PI / 2} />
+      </group>
+      <group ref={refs[5]}>
+        <Car color="#22c55e" type="sedan" rotation={-Math.PI / 2} />
+      </group>
+    </group>
+  );
+}
+
+function ParkingLotCars() {
+  const cars = [
+    [6.5, 5.5, "#38bdf8", "sedan"],
+    [7.1, 6.6, "#a78bfa", "ev"],
+    [7.8, 5.5, "#f8fafc", "sedan"],
+    [8.4, 6.6, "#fb7185", "sedan"],
+    [9.0, 5.5, "#f59e0b", "taxi"],
+  ] as const;
+
+  return (
+    <group>
+      {cars.map(([x, z, color, type], index) => (
+        <group key={index} position={[x, 0.1, z]}>
+          <Car color={color} type={type} rotation={Math.PI / 2} />
         </group>
       ))}
     </group>
   );
 }
 
-function PulseRing({ zone, delay = 0 }: { zone: Zone; delay?: number }) {
+function CityDetails({ onSelect }: { onSelect: (text: string) => void }) {
+  const trees = [
+    [-9.6, 5.5],
+    [-8.9, 6.7],
+    [-8.1, 5.7],
+    [-7.3, 7.2],
+    [-6.6, 6.0],
+    [-9.9, 7.4],
+    [-6.3, 7.1],
+    [-7.7, 6.6],
+    [-8.7, 7.7],
+    [-6.9, 5.1],
+  ];
+
+  const streetTrees = [
+    [-11.0, -3.6],
+    [-9.2, -3.7],
+    [-7.4, -3.8],
+    [6.4, 4.0],
+    [8.2, 4.0],
+    [10.1, 4.1],
+  ];
+
+  const people: [number, number, string][] = [
+    [-8.2, 6.3, "#86efac"],
+    [-7.5, 6.0, "#f8fafc"],
+    [-7.3, -6.2, "#fbbf24"],
+    [-8.1, -6.7, "#fde68a"],
+    [6.8, -6.2, "#c4b5fd"],
+    [7.5, -7.0, "#fb7185"],
+    [8.0, 0.7, "#f8fafc"],
+    [7.2, 0.1, "#93c5fd"],
+  ];
+
+  return (
+    <group>
+      {trees.map(([x, z], index) => (
+        <Tree key={`park-tree-${index}`} x={x} z={z} scale={1.18} />
+      ))}
+
+      {streetTrees.map(([x, z], index) => (
+        <Tree key={`street-tree-${index}`} x={x} z={z} scale={0.74} />
+      ))}
+
+      {people.map(([x, z, color], index) => (
+        <Person key={index} x={x} z={z} color={color} />
+      ))}
+
+      <CafeBlock x={-8.4} z={-6.4} onSelect={onSelect} />
+      <CafeBlock x={-7.4} z={-7.1} onSelect={onSelect} />
+      <CafeBlock x={-6.5} z={-6.3} onSelect={onSelect} />
+
+      <EventStage onSelect={onSelect} />
+      <ParkingLotCars />
+
+      <CitySign text="PARK" x={-6.1} z={5.4} color="#22c55e" />
+      <CitySign text="CAFE STREET" x={-5.7} z={-6.8} color="#f59e0b" />
+      <CitySign text="LIVE EVENT" x={9.4} z={-6.4} color="#a855f7" />
+      <CitySign text="PARKING" x={5.7} z={6.5} color="#38bdf8" />
+    </group>
+  );
+}
+
+function CitySign({
+  text,
+  x,
+  z,
+  color,
+}: {
+  text: string;
+  x: number;
+  z: number;
+  color: string;
+}) {
+  return (
+    <group position={[x, 0, z]}>
+      <mesh position={[0, 0.36, 0]}>
+        <cylinderGeometry args={[0.025, 0.025, 0.72, 8]} />
+        <meshStandardMaterial color="#94a3b8" roughness={0.5} metalness={0.42} />
+      </mesh>
+      <Html position={[0, 0.86, 0]} center transform distanceFactor={8}>
+        <div className="mini3DSign" style={{ ["--sign" as string]: color }}>
+          {text}
+        </div>
+      </Html>
+    </group>
+  );
+}
+
+function ZonePulse({ zone, delay = 0 }: { zone: Zone; delay?: number }) {
   const ref = useRef<THREE.Group>(null);
 
   useFrame((state) => {
@@ -902,13 +786,13 @@ function PulseRing({ zone, delay = 0 }: { zone: Zone; delay?: number }) {
 
       ref.current.children.forEach((child) => {
         const mat = (child as THREE.Mesh).material as THREE.MeshBasicMaterial;
-        if (mat) mat.opacity = Math.max(0, 0.62 - t * 0.22);
+        if (mat) mat.opacity = Math.max(0, 0.6 - t * 0.22);
       });
     }
   });
 
   return (
-    <group ref={ref} position={[zone.x, 0.09, zone.z]} rotation={[-Math.PI / 2, 0, 0]}>
+    <group ref={ref} position={[zone.x, 0.1, zone.z]} rotation={[-Math.PI / 2, 0, 0]}>
       <mesh>
         <torusGeometry args={[0.78, 0.018, 12, 92]} />
         <meshBasicMaterial color={zone.color} transparent opacity={0.55} />
@@ -929,28 +813,24 @@ function ZoneMarker({
       position={[zone.x, 0.1, zone.z]}
       onClick={(event) => {
         event.stopPropagation();
-        onSelect(`${zone.label} · ${zone.detail}`);
+        onSelect(`${zone.title} · ${zone.detail}`);
       }}
     >
-      <PulseRing zone={zone} />
-      <PulseRing zone={zone} delay={1.1} />
+      <ZonePulse zone={zone} />
+      <ZonePulse zone={zone} delay={1.1} />
+      <pointLight color={zone.color} intensity={7} distance={6.4} />
 
-      <pointLight color={zone.color} intensity={7} distance={6.2} />
-
-      <Float speed={2.0} rotationIntensity={0.08} floatIntensity={0.24}>
-        <Html center position={[0, 1.85, 0]} transform distanceFactor={8}>
+      <Float speed={1.8} rotationIntensity={0.06} floatIntensity={0.2}>
+        <Html center position={[0, 1.86, 0]} transform distanceFactor={8}>
           <button
-            className="sceneTag sceneTagV11"
+            className="premiumSceneTag"
             style={{ ["--zone" as string]: zone.color }}
             type="button"
           >
-            <span>{zone.icon}</span>
-            <div>
-              <b>{zone.label}</b>
-              <small>{zone.sub}</small>
-            </div>
+            <span>{zone.type}</span>
+            <b>{zone.title}</b>
+            <small>{zone.subtitle}</small>
             <strong>{zone.value}</strong>
-            <em>{zone.score}</em>
           </button>
         </Html>
       </Float>
@@ -960,8 +840,8 @@ function ZoneMarker({
 
 function SelectionPanel({ text }: { text: string }) {
   return (
-    <Html position={[-9.8, 3.3, -9.4]} transform distanceFactor={10}>
-      <div className="selectionPanel selectionPanelV11">
+    <Html position={[-10.8, 3.5, -10.4]} transform distanceFactor={10}>
+      <div className="selectionPanel selectionPanelV12">
         <b>SEVORA LIVE INSIGHT</b>
         <p>{text}</p>
         <div>
@@ -980,26 +860,26 @@ function CityModel({ mode = "night" }: { mode?: CityMode }) {
     "Click a building, café, event area or city signal to inspect live data."
   );
 
-  const colors = modeColors(mode);
+  const theme = modeTheme(mode);
 
   return (
-    <Canvas shadows dpr={[1, 1.65]} camera={{ position: [0, 12.2, 14.6], fov: 42 }}>
-      <color attach="background" args={[colors.bg]} />
-      <fog attach="fog" args={[colors.fog, 15, 38]} />
+    <Canvas shadows dpr={[1, 1.6]} camera={{ position: [0, 12.8, 14.9], fov: 41 }}>
+      <color attach="background" args={[theme.bg]} />
+      <fog attach="fog" args={[theme.fog, 16, 39]} />
 
-      <ambientLight intensity={colors.ambient} />
-      <directionalLight position={[4, 13, 8]} intensity={colors.sun} castShadow />
-      <pointLight position={[-7, 5, -4]} color={colors.cyan} intensity={15} distance={16} />
-      <pointLight position={[8, 6, -2]} color={colors.purple} intensity={13} distance={16} />
+      <ambientLight intensity={theme.ambient} />
+      <directionalLight position={[4, 13, 8]} intensity={theme.sun} castShadow />
+      <pointLight position={[-8, 5, -4]} color={theme.primary} intensity={15} distance={16} />
+      <pointLight position={[8, 6, -3]} color={theme.secondary} intensity={13} distance={16} />
       <pointLight position={[0, 4, 5]} color="#f59e0b" intensity={3} distance={8} />
 
       <Sparkles
-        count={150}
+        count={135}
         speed={0.22}
-        scale={[23, 4, 23]}
-        size={1.25}
-        color={colors.cyan}
-        opacity={0.2}
+        scale={[22, 4, 22]}
+        size={1.2}
+        color={theme.primary}
+        opacity={0.18}
       />
 
       <Ground mode={mode} />
@@ -1007,13 +887,13 @@ function CityModel({ mode = "night" }: { mode?: CityMode }) {
       <CityDetails onSelect={setSelected} />
       <MovingVehicles />
 
-      {zoneData.map((zone) => (
-        <ZoneMarker key={zone.label} zone={zone} onSelect={setSelected} />
+      {zones.map((zone) => (
+        <ZoneMarker key={zone.id} zone={zone} onSelect={setSelected} />
       ))}
 
       <SelectionPanel text={selected} />
 
-      <AnimatedCamera />
+      <CameraRig />
 
       <OrbitControls
         enableZoom
@@ -1022,7 +902,7 @@ function CityModel({ mode = "night" }: { mode?: CityMode }) {
         minDistance={9}
         maxDistance={25}
         minPolarAngle={0.42}
-        maxPolarAngle={1.25}
+        maxPolarAngle={1.22}
       />
     </Canvas>
   );
