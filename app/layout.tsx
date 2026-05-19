@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "SEVORA — Feel the city live",
   description:
-    "AI-supported real-time city life assistant with live city pulse, events, calm places and business visibility.",
+    "AI-supported real-time city life assistant with live 3D city pulse, events, calm places and business visibility.",
 };
 
 export default function RootLayout({

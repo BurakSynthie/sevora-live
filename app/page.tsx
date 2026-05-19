@@ -1,6 +1,34 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
+import {
+  Bell,
+  CalendarDays,
+  Car,
+  Coffee,
+  MapPin,
+  MessageCircle,
+  Navigation,
+  ParkingCircle,
+  RadioTower,
+  Rocket,
+  Sparkles,
+  Star,
+  Trees,
+  UsersRound,
+  Zap,
+} from "lucide-react";
+
+const CityModel = dynamic(() => import("../components/CityModel"), {
+  ssr: false,
+  loading: () => <div className="sceneLoading">Loading SEVORA city…</div>,
+});
+
+const AIOrb = dynamic(() => import("../components/AIOrb"), {
+  ssr: false,
+  loading: () => <div className="orbLoading" />,
+});
 
 type Lang = "en" | "tr" | "de";
 
@@ -21,12 +49,12 @@ const copy = {
     ],
     dailyTitle: "Everything you need, before you step out.",
     daily: [
-      ["Traffic", "Live road conditions", "🚗"],
-      ["Parking", "Find parking in seconds", "P"],
-      ["Quiet Places", "Discover calm spots", "🍃"],
-      ["Cafés", "Work-friendly spots", "☕"],
-      ["Events", "Live events near you", "✦"],
-      ["Reports", "Real people real time", "☁"],
+      ["Traffic", "Live road conditions"],
+      ["Parking", "Find parking in seconds"],
+      ["Quiet Places", "Discover calm spots"],
+      ["Cafés", "Work-friendly spots"],
+      ["Events", "Live events near you"],
+      ["Reports", "Real people real time"],
     ],
     aiTitle: "Ask the city.",
     aiText: "Your smart assistant for real-time city answers.",
@@ -42,10 +70,10 @@ const copy = {
     businessTitle: "Grow with SEVORA.",
     businessText: "Reach more people, at the right time, in the right place.",
     business: [
-      ["Publish Campaigns", "Reach local customers", "↗"],
-      ["Live Density Alerts", "Notify your customers", "▣"],
-      ["Boost Visibility", "Stand out on the map", "↗"],
-      ["Get More Customers", "Increase foot traffic", "▤"],
+      ["Publish Campaigns", "Reach local customers"],
+      ["Live Density Alerts", "Notify your customers"],
+      ["Boost Visibility", "Stand out on the map"],
+      ["Get More Customers", "Increase foot traffic"],
     ],
     finalTitle: "Be the first to experience the city live.",
     finalText: "Join the early access list and shape the future of SEVORA.",
@@ -68,12 +96,12 @@ const copy = {
     ],
     dailyTitle: "Dışarı çıkmadan önce ihtiyacın olan her şey.",
     daily: [
-      ["Trafik", "Canlı yol durumu", "🚗"],
-      ["Park", "Saniyeler içinde park bul", "P"],
-      ["Sakin Yerler", "Sessiz noktaları keşfet", "🍃"],
-      ["Kafeler", "Çalışmaya uygun yerler", "☕"],
-      ["Etkinlikler", "Yakınındaki canlı etkinlikler", "✦"],
-      ["Bildirimler", "Anlık kullanıcı bilgisi", "☁"],
+      ["Trafik", "Canlı yol durumu"],
+      ["Park", "Saniyeler içinde park bul"],
+      ["Sakin Yerler", "Sessiz noktaları keşfet"],
+      ["Kafeler", "Çalışmaya uygun yerler"],
+      ["Etkinlikler", "Yakınındaki canlı etkinlikler"],
+      ["Bildirimler", "Anlık kullanıcı bilgisi"],
     ],
     aiTitle: "Şehre sor.",
     aiText: "Anlık şehir cevapları için akıllı asistanın.",
@@ -89,10 +117,10 @@ const copy = {
     businessTitle: "SEVORA ile büyü.",
     businessText: "Doğru zamanda, doğru yerde, daha fazla kişiye ulaş.",
     business: [
-      ["Kampanya Yayınla", "Yerel müşterilere ulaş", "↗"],
-      ["Canlı Yoğunluk", "Müşterilerini bilgilendir", "▣"],
-      ["Görünürlüğü Artır", "Haritada öne çık", "↗"],
-      ["Daha Fazla Müşteri", "Yaya trafiğini artır", "▤"],
+      ["Kampanya Yayınla", "Yerel müşterilere ulaş"],
+      ["Canlı Yoğunluk", "Müşterilerini bilgilendir"],
+      ["Görünürlüğü Artır", "Haritada öne çık"],
+      ["Daha Fazla Müşteri", "Yaya trafiğini artır"],
     ],
     finalTitle: "Şehri canlı deneyimleyen ilk kişilerden ol.",
     finalText: "Erken erişim listesine katıl ve SEVORA’nın geleceğini birlikte şekillendir.",
@@ -115,12 +143,12 @@ const copy = {
     ],
     dailyTitle: "Alles, was du brauchst, bevor du losgehst.",
     daily: [
-      ["Verkehr", "Live-Straßenlage", "🚗"],
-      ["Parken", "Parkplatz in Sekunden finden", "P"],
-      ["Ruhige Orte", "Ruhige Spots entdecken", "🍃"],
-      ["Cafés", "Orte zum Arbeiten", "☕"],
-      ["Events", "Live-Events in der Nähe", "✦"],
-      ["Meldungen", "Echtzeit von Menschen", "☁"],
+      ["Verkehr", "Live-Straßenlage"],
+      ["Parken", "Parkplatz in Sekunden finden"],
+      ["Ruhige Orte", "Ruhige Spots entdecken"],
+      ["Cafés", "Orte zum Arbeiten"],
+      ["Events", "Live-Events in der Nähe"],
+      ["Meldungen", "Echtzeit von Menschen"],
     ],
     aiTitle: "Frag die Stadt.",
     aiText: "Dein smarter Assistent für Echtzeit-Antworten.",
@@ -136,10 +164,10 @@ const copy = {
     businessTitle: "Wachse mit SEVORA.",
     businessText: "Erreiche mehr Menschen zur richtigen Zeit am richtigen Ort.",
     business: [
-      ["Kampagnen veröffentlichen", "Lokale Kunden erreichen", "↗"],
-      ["Live-Dichte zeigen", "Kunden informieren", "▣"],
-      ["Sichtbarkeit steigern", "Auf der Karte auffallen", "↗"],
-      ["Mehr Kunden gewinnen", "Besucherfrequenz erhöhen", "▤"],
+      ["Kampagnen veröffentlichen", "Lokale Kunden erreichen"],
+      ["Live-Dichte zeigen", "Kunden informieren"],
+      ["Sichtbarkeit steigern", "Auf der Karte auffallen"],
+      ["Mehr Kunden gewinnen", "Besucherfrequenz erhöhen"],
     ],
     finalTitle: "Erlebe die Stadt live als einer der Ersten.",
     finalText: "Trage dich in die Early-Access-Liste ein und gestalte SEVORA mit.",
@@ -149,6 +177,20 @@ const copy = {
 };
 
 const langs: Lang[] = ["en", "tr", "de"];
+const statIcons = [UsersRound, Trees, ParkingCircle, Star];
+const dailyIcons = [Car, ParkingCircle, Trees, Coffee, CalendarDays, MessageCircle];
+const businessIcons = [Navigation, Bell, Rocket, Zap];
+
+function LogoMark({ large = false }: { large?: boolean }) {
+  return (
+    <span className={large ? "logoMark large" : "logoMark"}>
+      <span className="sTop" />
+      <span className="sMid" />
+      <span className="sBot" />
+      <b>S</b>
+    </span>
+  );
+}
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
@@ -159,18 +201,15 @@ export default function Home() {
     const reveals = document.querySelectorAll(".reveal");
     const sections = document.querySelectorAll("section[id]");
     const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add("visible");
-      });
+      entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("visible"));
     }, { threshold: 0.13 });
     const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
+      entries.forEach((entry) => entry.isIntersecting && setActive(entry.target.id));
     }, { rootMargin: "-45% 0px -45% 0px" });
 
     reveals.forEach((item) => revealObserver.observe(item));
     sections.forEach((item) => sectionObserver.observe(item));
+
     return () => {
       revealObserver.disconnect();
       sectionObserver.disconnect();
@@ -191,14 +230,11 @@ export default function Home() {
   return (
     <main className="page">
       <section className="hero" id="home">
-        <div className="cityBg" />
-        <div className="heroOverlay" />
+        <div className="heroShade" />
 
         <header className="header">
           <a className="brand" href="#home">
-            <span className="logoBox">
-              <img src="/sevora-logo.png" alt="SEVORA" />
-            </span>
+            <LogoMark large />
             <span>
               <strong>SEVORA</strong>
               <small>FEEL THE CITY LIVE</small>
@@ -233,8 +269,8 @@ export default function Home() {
           ))}
         </aside>
 
-        <div className="heroContent">
-          <div className="heroText reveal visible">
+        <div className="heroGrid">
+          <div className="heroCopy reveal visible">
             <p className="kicker"><i /> {t.heroTag}</p>
             <h1>
               {t.heroA}
@@ -248,53 +284,26 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mapTag eventTag">
-            <span>✦</span>
-            <b>EVENT AREA</b>
-            <small>Festival active</small>
-          </div>
-          <div className="mapTag quietTag">
-            <span>♧</span>
-            <b>QUIET ZONE</b>
-            <small>Work friendly</small>
-            <strong>28%</strong>
-          </div>
-          <div className="mapTag busyTag">
-            <span>★</span>
-            <b>BUSY CENTER</b>
-            <small>Crowd rising</small>
-            <strong>82%</strong>
-          </div>
-          <div className="mapTag parkingTag">
-            <span>P</span>
-            <b>PARKING SIGNAL</b>
-            <small>Space found</small>
-            <strong>6 min</strong>
-          </div>
-
-          <div className="ring ringOne" />
-          <div className="ring ringTwo" />
-          <div className="ring ringThree" />
-          <div className="ring ringFour" />
-
-          <div className="scrollHint">
-            <i />
-            SCROLL TO<br />EXPLORE
+          <div className="cityStage">
+            <CityModel />
           </div>
         </div>
 
         <section className="stats reveal visible" id="pulse">
-          {t.stats.map((stat, index) => (
-            <article className={`stat stat${index + 1}`} key={stat[0]}>
-              <div className="icon">{index === 0 ? "👥" : index === 1 ? "♧" : index === 2 ? "P" : "★"}</div>
-              <div>
-                <p>{stat[0]}</p>
-                <small>{stat[1]}</small>
-                <strong>{stat[2]}</strong>
-                <span className="lineGraph" />
-              </div>
-            </article>
-          ))}
+          {t.stats.map((stat, index) => {
+            const Icon = statIcons[index];
+            return (
+              <article className={`stat stat${index + 1}`} key={stat[0]}>
+                <div className="icon"><Icon size={23} /></div>
+                <div>
+                  <p>{stat[0]}</p>
+                  <small>{stat[1]}</small>
+                  <strong>{stat[2]}</strong>
+                  <span className="lineGraph" />
+                </div>
+              </article>
+            );
+          })}
         </section>
       </section>
 
@@ -302,13 +311,16 @@ export default function Home() {
         <p className="sectionKicker">Daily Life</p>
         <h2>{t.dailyTitle}</h2>
         <div className="dailyGrid">
-          {t.daily.map((card) => (
-            <article className="dailyCard" key={card[0]}>
-              <div>{card[2]}</div>
-              <h3>{card[0]}</h3>
-              <p>{card[1]}</p>
-            </article>
-          ))}
+          {t.daily.map((card, index) => {
+            const Icon = dailyIcons[index];
+            return (
+              <article className="dailyCard" key={card[0]}>
+                <div><Icon size={28} /></div>
+                <h3>{card[0]}</h3>
+                <p>{card[1]}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -318,12 +330,12 @@ export default function Home() {
           <h2>{t.aiTitle}</h2>
           <span>{t.aiText}</span>
           <div className="promptRow">
-            {t.prompts.map((prompt) => (
-              <button type="button" key={prompt}>{prompt}</button>
-            ))}
+            {t.prompts.map((prompt) => <button type="button" key={prompt}>{prompt}</button>)}
           </div>
         </div>
-        <div className="aiVisual" />
+        <div className="aiVisual">
+          <AIOrb />
+        </div>
       </section>
 
       <section className="events reveal" id="events">
@@ -335,8 +347,11 @@ export default function Home() {
         </div>
         <div className="eventGrid">
           {t.eventNames.map((event, index) => (
-            <article className="eventCard" key={event[0]}>
-              <img src={`/event-${index + 1}.jpg`} alt="" />
+            <article className={`eventCard event${index + 1}`} key={event[0]}>
+              <div className="eventArt">
+                <Sparkles size={46} />
+                <span />
+              </div>
               <div className="eventInfo">
                 <b>{event[3]}</b>
                 <h3>{event[0]}</h3>
@@ -356,20 +371,21 @@ export default function Home() {
           <a href="#waitlist">Learn More</a>
         </div>
         <div className="businessGrid">
-          {t.business.map((item) => (
-            <article key={item[0]}>
-              <div>{item[2]}</div>
-              <h3>{item[0]}</h3>
-              <p>{item[1]}</p>
-            </article>
-          ))}
+          {t.business.map((item, index) => {
+            const Icon = businessIcons[index];
+            return (
+              <article key={item[0]}>
+                <div><Icon size={26} /></div>
+                <h3>{item[0]}</h3>
+                <p>{item[1]}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 
       <section className="final reveal" id="waitlist">
-        <div className="finalLogo">
-          <img src="/sevora-logo.png" alt="SEVORA" />
-        </div>
+        <LogoMark large />
         <div className="finalText">
           <h2>{t.finalTitle}</h2>
           <p>{t.finalText}</p>
