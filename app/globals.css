@@ -2416,3 +2416,146 @@ body::-webkit-scrollbar-thumb:hover {
   border-radius: 999px;
   background: linear-gradient(90deg, #38bdf8 0 91%, rgba(255,255,255,.08) 91% 100%);
 }
+
+/* ===== SEVORA REAL BRAND / FOOTER V2 ===== */
+
+.logoMark,
+.footerLogo,
+.homeBubbleLogo .logoMark {
+  background-image: url("/assets/brand/sevora-s-mark.svg") !important;
+  background-size: 100% 100% !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border-color: rgba(103,232,249,.34) !important;
+}
+
+.logoMark b,
+.logoMark .sTop,
+.logoMark .sMid,
+.logoMark .sBot,
+.homeBubbleLogo .logoMark b,
+.homeBubbleLogo .logoMark .sTop,
+.homeBubbleLogo .logoMark .sMid,
+.homeBubbleLogo .logoMark .sBot {
+  display: none !important;
+}
+
+.siteFooterV2 .footerTop {
+  align-items: stretch;
+}
+
+.footerRealLogo {
+  flex: 0 0 88px;
+  width: 88px;
+  height: 88px;
+  border-radius: 26px;
+  filter: drop-shadow(0 0 30px rgba(103,232,249,.22));
+}
+
+.footerIconContactGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 11px;
+}
+
+.footerIconContactCard {
+  position: relative;
+  display: grid;
+  min-height: 132px;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 22px;
+  background: rgba(255,255,255,.035);
+  overflow: hidden;
+  transition: .24s ease;
+}
+
+.footerIconContactCard::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(circle at 50% 20%, rgba(103,232,249,.16), transparent 46%);
+  opacity: 0;
+  transition: .24s ease;
+}
+
+.footerIconContactCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(103,232,249,.34);
+}
+
+.footerIconContactCard:hover::before {
+  opacity: 1;
+}
+
+.footerIconContactCard img {
+  position: relative;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.footerIconContactCard span {
+  position: relative;
+  z-index: 2;
+  max-width: 135px;
+  color: rgba(226,232,240,.7);
+  font-size: 11px;
+  text-align: center;
+  word-break: break-word;
+}
+
+.realPaymentGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.realPaymentGrid img {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 13px;
+  object-fit: contain;
+  box-shadow: 0 14px 36px rgba(0,0,0,.18);
+}
+
+.storeBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.storeBadges button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: default;
+}
+
+.storeBadges img {
+  width: 160px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 14px 32px rgba(0,0,0,.22));
+}
+
+@media (max-width: 980px) {
+  .footerIconContactGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .footerIconContactGrid,
+  .realPaymentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .storeBadges img {
+    width: 145px;
+  }
+}
