@@ -1465,3 +1465,597 @@ body::-webkit-scrollbar-thumb:hover {
     display: grid;
   }
 }
+
+/* ===== SEVORA HYBRID CITY DASHBOARD HERO V12 ===== */
+
+.hybridHero {
+  position: relative;
+  min-height: 940px;
+  overflow: hidden;
+  background: #020814;
+  color: white;
+}
+
+.hybridHero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(2,8,20,.82), transparent 22%, transparent 70%, rgba(2,8,20,.8)),
+    linear-gradient(180deg, rgba(2,8,20,.36), transparent 46%, #020814 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hybridTopbar {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 18px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto minmax(260px, 420px) auto auto auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.hybridBrand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hybridLogo {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border: 1px solid rgba(103,232,249,.5);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(8,47,73,.85), rgba(15,23,42,.96));
+  box-shadow: 0 0 34px rgba(56,189,248,.25);
+}
+
+.hybridLogo span {
+  font-size: 34px;
+  font-weight: 950;
+  background: linear-gradient(135deg, #67e8f9, #a78bfa);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hybridBrand strong {
+  display: block;
+  font-size: 28px;
+  letter-spacing: .18em;
+}
+
+.hybridBrand span {
+  color: rgba(226,232,240,.68);
+  font-size: 12px;
+}
+
+.hybridSearch,
+.hybridWeather,
+.hybridTime,
+.hybridBell {
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(2,8,20,.6);
+  backdrop-filter: blur(18px);
+  border-radius: 18px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.26);
+}
+
+.hybridSearch {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  min-height: 56px;
+  overflow: hidden;
+}
+
+.hybridSearch input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  padding: 0 18px;
+}
+
+.hybridSearch button,
+.hybridBell {
+  border: 0;
+  color: white;
+  cursor: pointer;
+}
+
+.hybridSearch button {
+  width: 58px;
+  background: rgba(255,255,255,.04);
+  font-size: 22px;
+}
+
+.hybridWeather {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 16px;
+}
+
+.hybridWeather > span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(59,130,246,.16);
+  color: #93c5fd;
+}
+
+.hybridWeather div {
+  display: grid;
+}
+
+.hybridWeather small,
+.hybridTime small {
+  color: rgba(226,232,240,.58);
+}
+
+.hybridTime {
+  display: grid;
+  place-items: center;
+  min-height: 56px;
+  padding: 0 18px;
+}
+
+.hybridBell {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  font-size: 24px;
+}
+
+.hybridSidebar {
+  position: absolute;
+  left: 18px;
+  top: 110px;
+  bottom: 190px;
+  z-index: 18;
+  display: grid;
+  width: 148px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 22px;
+  background: rgba(2,8,20,.62);
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 25px 80px rgba(0,0,0,.28);
+}
+
+.hybridSidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  color: rgba(226,232,240,.76);
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.hybridSidebar a.active {
+  background: linear-gradient(135deg, rgba(59,130,246,.92), rgba(30,64,175,.86));
+  color: white;
+}
+
+.hybridSidebar i {
+  font-style: normal;
+  opacity: .9;
+}
+
+.hybridPremium {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  padding: 16px 20px;
+  color: #facc15;
+}
+
+.hybridPremium span {
+  color: rgba(226,232,240,.54);
+  font-size: 12px;
+}
+
+.hybridMapViewport {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: grab;
+  user-select: none;
+}
+
+.hybridMapViewport.dragging {
+  cursor: grabbing;
+}
+
+.hybridMapLayer {
+  position: absolute;
+  inset: -4%;
+  transform-origin: center;
+  transition: transform .12s ease-out;
+}
+
+.hybridMapLayer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+.mapSignalCard {
+  position: absolute;
+  z-index: 6;
+  display: grid;
+  min-width: 160px;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, var(--tone) 55%, transparent);
+  border-radius: 18px;
+  background: rgba(2,8,20,.74);
+  color: white;
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 20px 70px rgba(0,0,0,.36), 0 0 26px color-mix(in srgb, var(--tone) 24%, transparent);
+  backdrop-filter: blur(16px);
+  transition: .22s ease;
+}
+
+.mapSignalCard:hover,
+.mapSignalCard.active {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: color-mix(in srgb, var(--tone) 14%, rgba(2,8,20,.82));
+}
+
+.mapSignalCard span {
+  justify-self: start;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--tone) 22%, transparent);
+  color: var(--tone);
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.mapSignalCard b {
+  font-size: 14px;
+  letter-spacing: .04em;
+}
+
+.mapSignalCard small {
+  margin-top: 4px;
+  color: rgba(226,232,240,.68);
+}
+
+.mapSignalCard strong {
+  margin-top: 6px;
+  color: var(--tone);
+  font-size: 18px;
+}
+
+.mapPulsePin {
+  position: absolute;
+  z-index: 5;
+  width: 74px;
+  height: 74px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tone) 58%, transparent) 0%, color-mix(in srgb, var(--tone) 16%, transparent) 35%, transparent 70%);
+  box-shadow: 0 0 42px color-mix(in srgb, var(--tone) 42%, transparent);
+  animation: hybridPulse 2.6s ease-in-out infinite;
+}
+
+.hybridInsight {
+  position: absolute;
+  right: 64px;
+  top: 112px;
+  z-index: 19;
+  width: 300px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 24px;
+  background: rgba(2,8,20,.72);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 100px rgba(0,0,0,.38);
+  padding: 20px;
+}
+
+.insightTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  color: rgba(226,232,240,.68);
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.insightTop button {
+  border: 0;
+  background: transparent;
+  color: rgba(226,232,240,.7);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.hybridInsight h2 {
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.hybridInsight p {
+  color: rgba(226,232,240,.68);
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+.densityBox {
+  display: grid;
+  grid-template-columns: 1fr 88px;
+  align-items: center;
+  gap: 14px;
+  margin: 14px 0 18px;
+}
+
+.densityBox div {
+  display: grid;
+  gap: 3px;
+}
+
+.densityBox strong {
+  color: var(--tone);
+  font-size: 30px;
+}
+
+.densityBox span {
+  color: rgba(226,232,240,.62);
+  font-size: 12px;
+}
+
+.densityBox i {
+  display: block;
+  width: 82px;
+  height: 82px;
+  border-radius: 999px;
+  background: conic-gradient(var(--tone) 0 72%, rgba(255,255,255,.08) 72% 100%);
+  box-shadow: 0 0 38px color-mix(in srgb, var(--tone) 32%, transparent);
+}
+
+.hybridInsight h3 {
+  margin: 18px 0 10px;
+  font-size: 14px;
+}
+
+.insightSignalList {
+  display: grid;
+  gap: 8px;
+}
+
+.insightSignalList div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 9px;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 13px;
+  background: rgba(255,255,255,.035);
+  padding: 10px;
+  font-size: 13px;
+}
+
+.insightSignalList span {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--dot);
+  box-shadow: 0 0 15px var(--dot);
+}
+
+.aiReco {
+  margin-bottom: 14px;
+}
+
+.insightButton {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  cursor: pointer;
+  padding: 0 16px;
+  font-weight: 900;
+}
+
+.insightPreviewImage {
+  height: 116px;
+  margin-top: 16px;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, transparent, rgba(2,8,20,.25)),
+    url("/assets/cards/business-visibility.svg");
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.hybridMapTools {
+  position: absolute;
+  right: 18px;
+  bottom: 130px;
+  z-index: 20;
+  display: grid;
+  gap: 8px;
+}
+
+.hybridMapTools button {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  background: rgba(2,8,20,.66);
+  color: white;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  font-size: 22px;
+}
+
+.hybridBottomCards {
+  position: absolute;
+  left: 120px;
+  right: 90px;
+  bottom: 32px;
+  z-index: 19;
+  display: grid;
+  grid-template-columns: 1fr 1.05fr 1.05fr 1.05fr .95fr;
+  gap: 14px;
+}
+
+.hybridBottomCards article {
+  min-height: 136px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  background: rgba(2,8,20,.68);
+  backdrop-filter: blur(18px);
+  padding: 17px;
+  box-shadow: 0 20px 70px rgba(0,0,0,.25);
+}
+
+.hybridBottomCards span {
+  display: block;
+  margin-bottom: 12px;
+  color: rgba(226,232,240,.62);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.hybridBottomCards strong {
+  display: block;
+  font-size: 22px;
+}
+
+.hybridBottomCards small {
+  color: rgba(226,232,240,.62);
+}
+
+.miniWave {
+  display: block;
+  width: 90px;
+  height: 32px;
+  margin-top: 12px;
+  border-bottom: 3px solid #22c55e;
+  border-radius: 50%;
+}
+
+.miniPhoto {
+  float: right;
+  width: 74px;
+  height: 60px;
+  margin-top: -24px;
+  border-radius: 13px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+.miniPhoto.park { background-image: url("/assets/cards/park-calm-premium.svg"); }
+.miniPhoto.event { background-image: url("/assets/cards/event-stage-premium.svg"); }
+.miniPhoto.cafe { background-image: url("/assets/cards/cafe-work-premium.svg"); }
+
+.airRing {
+  float: right;
+  width: 58px;
+  height: 58px;
+  margin-top: -24px;
+  border-radius: 999px;
+  background: conic-gradient(#22c55e 0 76%, rgba(255,255,255,.08) 76% 100%);
+}
+
+@keyframes hybridPulse {
+  0%, 100% {
+    opacity: .55;
+    transform: translate(-50%, -50%) scale(.82);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+@media (max-width: 1180px) {
+  .hybridTopbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .hybridSearch,
+  .hybridWeather,
+  .hybridTime {
+    display: none;
+  }
+
+  .hybridSidebar,
+  .hybridInsight {
+    display: none;
+  }
+
+  .hybridBottomCards {
+    left: 18px;
+    right: 18px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .hybridHero {
+    min-height: 980px;
+  }
+
+  .hybridBrand strong {
+    font-size: 20px;
+  }
+
+  .hybridTopbar {
+    left: 14px;
+    right: 14px;
+  }
+
+  .hybridMapLayer {
+    inset: -12%;
+  }
+
+  .mapSignalCard {
+    min-width: 132px;
+    padding: 11px;
+  }
+
+  .mapSignalCard b {
+    font-size: 12px;
+  }
+
+  .hybridBottomCards {
+    grid-template-columns: 1fr;
+    bottom: 22px;
+  }
+
+  .hybridBottomCards article:nth-child(n+4) {
+    display: none;
+  }
+}
