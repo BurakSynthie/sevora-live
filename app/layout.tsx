@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "SEVORA — Feel the city live",
   description:
-    "SEVORA is an AI-supported real-time city life assistant with live city pulse, calm places, user reports and smart recommendations.",
+    "AI-supported real-time city life assistant with live city pulse, calm place radar, user reports and smart recommendations.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

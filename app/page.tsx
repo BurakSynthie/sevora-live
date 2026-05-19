@@ -1,164 +1,381 @@
-const liveZones = [
-  { name: "North District", status: "Calm", value: "28%", className: "zone zone-a" },
-  { name: "Central Flow", status: "Busy", value: "82%", className: "zone zone-b" },
-  { name: "Harbor Line", status: "Live", value: "64%", className: "zone zone-c" },
-  { name: "Quiet Block", status: "Work Friendly", value: "41%", className: "zone zone-d" },
-];
+"use client";
 
-const intelligence = [
-  "Weather-aware suggestions",
-  "Crowd density reports",
-  "Quiet place radar",
-  "Live user signals",
-  "AI city recommendations",
-];
+import { useMemo, useState } from "react";
 
-const reports = [
-  "Queue is low near the east line",
-  "Central area is getting crowded",
-  "Best quiet workspace is 6 min away",
-];
+type Lang = "en" | "tr" | "de";
+
+const copy = {
+  en: {
+    navPulse: "Pulse",
+    navLife: "Daily Life",
+    navBusiness: "Businesses",
+    navWaitlist: "Early Access",
+    heroKicker: "Live city intelligence",
+    heroTitle: "Feel the city live.",
+    heroLead:
+      "SEVORA helps you see crowds, quiet places, events, parking signals and local reports before you move.",
+    primary: "Join Early Access",
+    secondary: "Explore the Pulse",
+    heroNotes: ["Crowd density", "Quiet places", "Live events", "AI suggestions"],
+    cityTag: "Futuristic city preview",
+    cityStatus: "Live demo layer",
+    pulseTitle: "A living 3D layer over the city.",
+    pulseLead:
+      "The first view is not a dashboard. It is the city itself: buildings, roads, events, live density zones and calm routes breathing together.",
+    zones: [
+      ["Quiet Zone", "Work friendly", "28%"],
+      ["Event Area", "Festival active", "Live"],
+      ["Busy Center", "Crowd rising", "82%"],
+      ["Parking Signal", "Space found", "6 min"],
+    ],
+    lifeTitle: "Know before you go.",
+    lifeLead:
+      "SEVORA is designed for everyday decisions: where to go, when to leave, where to park and which place feels right now.",
+    lifeItems: [
+      ["Crowds", "See how busy a district feels before you arrive."],
+      ["Quiet places", "Find calm cafés, parks and work-friendly spots."],
+      ["Events", "Discover concerts, festivals, matches and local activity."],
+      ["Parking", "Follow community and business signals for parking chances."],
+      ["Queues", "Avoid long waiting lines with live reports."],
+      ["AI advice", "Ask what makes sense based on time, weather and mood."],
+    ],
+    aiTitle: "Ask the city.",
+    aiLead:
+      "The AI layer combines public APIs, user reports, business signals and prediction logic to answer practical questions.",
+    aiPrompts: [
+      "Where should I work today?",
+      "Is the center crowded right now?",
+      "Any calm café nearby?",
+      "Which route feels less busy?",
+    ],
+    businessTitle: "Businesses become part of the city pulse.",
+    businessLead:
+      "Cafés, restaurants, car washes, gyms and local stores can publish campaigns, show live availability and reach nearby users at the right moment.",
+    businessItems: ["Publish campaigns", "Show live density", "Get discovered nearby", "Attract the right customers"],
+    languagesTitle: "Built global from day one.",
+    languagesLead:
+      "SEVORA starts with English, Turkish and German. More languages can be added without changing the core experience.",
+    finalTitle: "Enter SEVORA early.",
+    finalLead:
+      "Join the first access list and follow the city before the city moves.",
+    email: "Email address",
+    join: "Join waitlist",
+  },
+  tr: {
+    navPulse: "Pulse",
+    navLife: "Günlük Hayat",
+    navBusiness: "İşletmeler",
+    navWaitlist: "Erken Erişim",
+    heroKicker: "Canlı şehir zekâsı",
+    heroTitle: "Şehrin nabzını hisset.",
+    heroLead:
+      "SEVORA; kalabalığı, sakin yerleri, etkinlikleri, park sinyallerini ve yerel bildirimleri yola çıkmadan önce görmeni sağlar.",
+    primary: "Erken Erişime Katıl",
+    secondary: "Pulse’ı Keşfet",
+    heroNotes: ["Yoğunluk", "Sakin yerler", "Canlı etkinlikler", "AI önerileri"],
+    cityTag: "Futuristik şehir önizlemesi",
+    cityStatus: "Canlı demo katmanı",
+    pulseTitle: "Şehrin üzerinde yaşayan 3D bir katman.",
+    pulseLead:
+      "İlk ekran bir dashboard değil. Şehrin kendisi: binalar, yollar, etkinlikler, yoğun bölgeler ve sakin rotalar birlikte nefes alıyor.",
+    zones: [
+      ["Sakin Bölge", "Çalışmaya uygun", "28%"],
+      ["Etkinlik Alanı", "Festival aktif", "Canlı"],
+      ["Yoğun Merkez", "Kalabalık artıyor", "82%"],
+      ["Park Sinyali", "Yer bulundu", "6 dk"],
+    ],
+    lifeTitle: "Gitmeden önce bil.",
+    lifeLead:
+      "SEVORA günlük kararlar için tasarlanır: nereye gidilir, ne zaman çıkılır, nereye park edilir ve şu an hangi yer mantıklı?",
+    lifeItems: [
+      ["Kalabalık", "Bir bölgenin ne kadar yoğun olduğunu gitmeden gör."],
+      ["Sakin yerler", "Sessiz kafeleri, parkları ve çalışmaya uygun noktaları bul."],
+      ["Etkinlikler", "Konserleri, festivalleri, maç günlerini ve yerel hareketi keşfet."],
+      ["Park", "Topluluk ve işletme sinyalleriyle park ihtimalini takip et."],
+      ["Sıra", "Canlı bildirimlerle uzun bekleme kuyruklarından kaçın."],
+      ["AI tavsiyesi", "Saat, hava durumu ve moda göre ne mantıklı sor."],
+    ],
+    aiTitle: "Şehre sor.",
+    aiLead:
+      "AI katmanı; açık API verilerini, kullanıcı bildirimlerini, işletme sinyallerini ve tahmin mantığını birleştirerek pratik cevaplar üretir.",
+    aiPrompts: [
+      "Bugün nerede çalışılır?",
+      "Merkez şu an kalabalık mı?",
+      "Yakında sakin kafe var mı?",
+      "Hangi rota daha rahat?",
+    ],
+    businessTitle: "İşletmeler şehir pulse sisteminin parçası olur.",
+    businessLead:
+      "Kafeler, restoranlar, oto yıkamalar, spor salonları ve yerel mağazalar kampanya yayınlayabilir, anlık müsaitlik gösterebilir ve yakındaki kullanıcılara doğru anda ulaşabilir.",
+    businessItems: ["Kampanya yayınla", "Canlı yoğunluk göster", "Yakında keşfedil", "Doğru müşteriyi çek"],
+    languagesTitle: "İlk günden global kuruldu.",
+    languagesLead:
+      "SEVORA İngilizce, Türkçe ve Almanca ile başlar. Sonrasında diğer diller temel deneyimi bozmadan eklenebilir.",
+    finalTitle: "SEVORA’ya erken gir.",
+    finalLead:
+      "İlk erişim listesine katıl ve şehir hareket etmeden önce şehri takip et.",
+    email: "E-posta adresin",
+    join: "Bekleme listesine katıl",
+  },
+  de: {
+    navPulse: "Pulse",
+    navLife: "Alltag",
+    navBusiness: "Unternehmen",
+    navWaitlist: "Early Access",
+    heroKicker: "Live City Intelligence",
+    heroTitle: "Erlebe den Puls der Stadt.",
+    heroLead:
+      "SEVORA zeigt dir Menschenmengen, ruhige Orte, Events, Parksignale und lokale Meldungen, bevor du losgehst.",
+    primary: "Early Access sichern",
+    secondary: "Pulse entdecken",
+    heroNotes: ["Dichte", "Ruhige Orte", "Live-Events", "KI-Empfehlungen"],
+    cityTag: "Futuristische Stadtvorschau",
+    cityStatus: "Live-Demo-Layer",
+    pulseTitle: "Eine lebendige 3D-Ebene über der Stadt.",
+    pulseLead:
+      "Der erste Blick ist kein Dashboard. Es ist die Stadt selbst: Gebäude, Straßen, Events, Dichtezonen und ruhige Routen atmen gemeinsam.",
+    zones: [
+      ["Ruhige Zone", "Ideal zum Arbeiten", "28%"],
+      ["Eventbereich", "Festival aktiv", "Live"],
+      ["Volles Zentrum", "Dichte steigt", "82%"],
+      ["Park-Signal", "Platz gefunden", "6 Min"],
+    ],
+    lifeTitle: "Wissen, bevor du gehst.",
+    lifeLead:
+      "SEVORA hilft bei täglichen Entscheidungen: wohin gehen, wann losfahren, wo parken und welcher Ort gerade passt.",
+    lifeItems: [
+      ["Menschenmengen", "Sieh, wie voll ein Bereich ist, bevor du ankommst."],
+      ["Ruhige Orte", "Finde Cafés, Parks und Orte zum Arbeiten."],
+      ["Events", "Entdecke Konzerte, Festivals, Spieltage und lokale Aktivität."],
+      ["Parken", "Nutze Community- und Business-Signale für Parkchancen."],
+      ["Warteschlangen", "Vermeide lange Wartezeiten mit Live-Meldungen."],
+      ["KI-Rat", "Frag nach Zeit, Wetter und Stimmung, was gerade sinnvoll ist."],
+    ],
+    aiTitle: "Frag die Stadt.",
+    aiLead:
+      "Die KI-Ebene kombiniert öffentliche APIs, Nutzerberichte, Business-Signale und Vorhersagen für praktische Antworten.",
+    aiPrompts: [
+      "Wo kann ich heute arbeiten?",
+      "Ist das Zentrum gerade voll?",
+      "Gibt es ein ruhiges Café in der Nähe?",
+      "Welche Route ist entspannter?",
+    ],
+    businessTitle: "Unternehmen werden Teil des City Pulse.",
+    businessLead:
+      "Cafés, Restaurants, Waschstraßen, Fitnessstudios und lokale Geschäfte können Angebote veröffentlichen, Verfügbarkeit zeigen und Nutzer in der Nähe erreichen.",
+    businessItems: ["Angebote veröffentlichen", "Live-Dichte zeigen", "In der Nähe entdeckt werden", "Passende Kunden gewinnen"],
+    languagesTitle: "Global gedacht ab Tag eins.",
+    languagesLead:
+      "SEVORA startet mit Englisch, Türkisch und Deutsch. Weitere Sprachen können später ergänzt werden.",
+    finalTitle: "Betritt SEVORA früh.",
+    finalLead:
+      "Trage dich in die Early-Access-Liste ein und folge der Stadt, bevor sie sich bewegt.",
+    email: "E-Mail-Adresse",
+    join: "Warteliste beitreten",
+  },
+};
+
+const langs: Lang[] = ["en", "tr", "de"];
+
+function CityScene({ t }: { t: typeof copy.en }) {
+  return (
+    <div className="cityScene" aria-label={t.cityTag}>
+      <div className="cityCamera">
+        <div className="cityBase">
+          <div className="river" />
+          <div className="avenue avenueA" />
+          <div className="avenue avenueB" />
+          <div className="avenue avenueC" />
+          <div className="avenue avenueD" />
+
+          {Array.from({ length: 62 }).map((_, index) => (
+            <span key={index} className={`tower tower-${(index % 14) + 1}`} />
+          ))}
+
+          <div className="eventZone">
+            <span className="confetti c1" />
+            <span className="confetti c2" />
+            <span className="confetti c3" />
+            <span className="confetti c4" />
+            <strong>EVENT</strong>
+          </div>
+
+          {t.zones.map((zone, index) => (
+            <div className={`zone zone${index + 1}`} key={zone[0]}>
+              <span className="zonePulse" />
+              <b>{zone[0]}</b>
+              <small>{zone[1]}</small>
+              <em>{zone[2]}</em>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="sceneBadge topBadge">
+        <small>{t.cityTag}</small>
+        <strong>{t.cityStatus}</strong>
+      </div>
+      <div className="sceneBadge bottomBadge">
+        <small>SEVORA Pulse</small>
+        <strong>AI + Reports + Business Signals</strong>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
-  return (
-    <main className="site">
-      <section className="hero">
-        <div className="ambient ambient-one" />
-        <div className="ambient ambient-two" />
-        <div className="noise" />
+  const [lang, setLang] = useState<Lang>("en");
+  const t = useMemo(() => copy[lang], [lang]);
 
-        <header className="topbar">
-          <a className="brand" href="#">
-            <span className="brand-icon">S</span>
+  return (
+    <main className="page">
+      <section className="hero" id="top">
+        <div className="skyGlow skyOne" />
+        <div className="skyGlow skyTwo" />
+        <div className="grain" />
+
+        <header className="header">
+          <a href="#top" className="brand">
+            <img src="/sevora-logo.png" alt="SEVORA logo" />
             <span>
               <strong>SEVORA</strong>
-              <small>Live City Intelligence</small>
+              <small>sevora.live</small>
             </span>
           </a>
 
-          <nav className="desktop-nav">
-            <a href="#pulse">Pulse</a>
-            <a href="#ai">AI</a>
-            <a href="#waitlist">Early Access</a>
+          <nav className="nav">
+            <a href="#pulse">{t.navPulse}</a>
+            <a href="#life">{t.navLife}</a>
+            <a href="#business">{t.navBusiness}</a>
+            <a href="#waitlist">{t.navWaitlist}</a>
           </nav>
+
+          <div className="langSwitch" aria-label="Language selector">
+            {langs.map((item) => (
+              <button
+                key={item}
+                onClick={() => setLang(item)}
+                className={lang === item ? "active" : ""}
+                type="button"
+              >
+                {item.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </header>
 
-        <div className="hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow">
-              <span /> sevora.live is now forming
+        <div className="heroContent">
+          <div className="heroCopy">
+            <p className="kicker">
+              <span /> {t.heroKicker}
             </p>
+            <h1>{t.heroTitle}</h1>
+            <p className="lead">{t.heroLead}</p>
 
-            <h1>
-              Feel the city <em>before</em> you move.
-            </h1>
-
-            <p className="lead">
-              SEVORA is a real-time city life assistant. It reads live city
-              signals, quiet zones, crowd density and local reports to help you
-              decide where to go next.
-            </p>
-
-            <div className="hero-actions">
-              <a href="#waitlist" className="button primary">
-                Join early access
+            <div className="actions">
+              <a href="#waitlist" className="btn primaryBtn">
+                {t.primary}
               </a>
-              <a href="#pulse" className="button ghost">
-                Explore city pulse
+              <a href="#pulse" className="btn secondaryBtn">
+                {t.secondary}
               </a>
             </div>
 
-            <div className="signal-strip">
-              <span>Live pulse</span>
-              <span>Quiet radar</span>
-              <span>AI routes</span>
+            <div className="miniSignals">
+              {t.heroNotes.map((note) => (
+                <span key={note}>{note}</span>
+              ))}
             </div>
           </div>
 
-          <div className="city-stage" id="pulse" aria-label="SEVORA futuristic 3D city map">
-            <div className="city-perspective">
-              <div className="city-grid">
-                <div className="road road-one" />
-                <div className="road road-two" />
-                <div className="road road-three" />
-                <div className="road road-four" />
-
-                {Array.from({ length: 38 }).map((_, index) => (
-                  <span
-                    key={index}
-                    className={`building b-${(index % 10) + 1}`}
-                  />
-                ))}
-
-                {liveZones.map((zone) => (
-                  <div className={zone.className} key={zone.name}>
-                    <span className="zone-pulse" />
-                    <strong>{zone.name}</strong>
-                    <small>{zone.status}</small>
-                    <b>{zone.value}</b>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="hud-card hud-main">
-              <small>City Pulse</small>
-              <strong>Live density map</strong>
-              <p>Demo signal engine active</p>
-            </div>
-
-            <div className="hud-card hud-weather">
-              <small>Mode</small>
-              <strong>Night / Social</strong>
-            </div>
-          </div>
+          <CityScene t={t} />
         </div>
       </section>
 
-      <section className="story-section">
-        <div className="section-heading">
-          <p>Not just a map</p>
-          <h2>A living layer over the city.</h2>
+      <section className="pulseSection" id="pulse">
+        <div className="sectionIntro">
+          <p>01 / CITY PULSE</p>
+          <h2>{t.pulseTitle}</h2>
+          <span>{t.pulseLead}</span>
+        </div>
+        <div className="wideCity">
+          <CityScene t={t} />
+        </div>
+      </section>
+
+      <section className="lifeSection" id="life">
+        <div className="sectionIntro left">
+          <p>02 / DAILY LIFE</p>
+          <h2>{t.lifeTitle}</h2>
+          <span>{t.lifeLead}</span>
         </div>
 
-        <div className="intelligence-grid">
-          {intelligence.map((item) => (
-            <article className="intelligence-card" key={item}>
-              <span />
-              <h3>{item}</h3>
-              <p>
-                SEVORA combines public APIs, user reports, business signals and
-                AI predictions into one city intelligence experience.
-              </p>
+        <div className="lifeGrid">
+          {t.lifeItems.map((item, index) => (
+            <article className="lifeCard" key={item[0]}>
+              <b>{String(index + 1).padStart(2, "0")}</b>
+              <h3>{item[0]}</h3>
+              <p>{item[1]}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="ai-section" id="ai">
-        <div className="ai-orb">
-          <span>S</span>
+      <section className="aiSection">
+        <div className="aiOrb">
+          <img src="/sevora-logo.png" alt="" />
         </div>
-
-        <div className="ai-copy">
-          <p>SEVORA AI</p>
-          <h2>Ask the city what makes sense right now.</h2>
-          <div className="report-stack">
-            {reports.map((report) => (
-              <div className="report" key={report}>
-                “{report}”
-              </div>
+        <div className="aiText">
+          <p>03 / SEVORA AI</p>
+          <h2>{t.aiTitle}</h2>
+          <span>{t.aiLead}</span>
+          <div className="promptList">
+            {t.aiPrompts.map((prompt) => (
+              <div key={prompt}>“{prompt}”</div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="waitlist" id="waitlist">
-        <p>Early Access</p>
-        <h2>Be one of the first to enter SEVORA.</h2>
+      <section className="businessSection" id="business">
+        <div className="businessVisual">
+          <div className="businessRing" />
+          <div className="businessPin cafe">CAFE</div>
+          <div className="businessPin food">FOOD</div>
+          <div className="businessPin wash">CAR WASH</div>
+          <div className="businessPin gym">GYM</div>
+        </div>
+
+        <div className="businessText">
+          <p>04 / BUSINESS</p>
+          <h2>{t.businessTitle}</h2>
+          <span>{t.businessLead}</span>
+          <div className="businessItems">
+            {t.businessItems.map((item) => (
+              <strong key={item}>{item}</strong>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="languageSection">
+        <p>05 / LANGUAGE</p>
+        <h2>{t.languagesTitle}</h2>
+        <span>{t.languagesLead}</span>
+        <div className="languageCards">
+          <button type="button" onClick={() => setLang("en")}>🇬🇧 English</button>
+          <button type="button" onClick={() => setLang("tr")}>🇹🇷 Türkçe</button>
+          <button type="button" onClick={() => setLang("de")}>🇩🇪 Deutsch</button>
+        </div>
+      </section>
+
+      <section className="finalSection" id="waitlist">
+        <img src="/sevora-logo.png" alt="SEVORA" />
+        <h2>{t.finalTitle}</h2>
+        <p>{t.finalLead}</p>
         <form>
-          <input type="email" placeholder="Email address" />
-          <button type="button">Join waitlist</button>
+          <input type="email" placeholder={t.email} />
+          <button type="button">{t.join}</button>
         </form>
       </section>
     </main>
