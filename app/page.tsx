@@ -45,6 +45,7 @@ const copy = {
     roadmap: "View Roadmap",
     progress: "Preview build progress",
     status: "Private development",
+    modeTitle: "City Mode",
     modes: {
       night: "Night",
       day: "Day",
@@ -94,6 +95,7 @@ const copy = {
     roadmap: "Roadmap’i Gör",
     progress: "Preview geliştirme durumu",
     status: "Özel geliştirme aşaması",
+    modeTitle: "Şehir Modu",
     modes: {
       night: "Gece",
       day: "Gündüz",
@@ -143,6 +145,7 @@ const copy = {
     roadmap: "Roadmap ansehen",
     progress: "Preview Fortschritt",
     status: "Private Entwicklung",
+    modeTitle: "City Mode",
     modes: {
       night: "Nacht",
       day: "Tag",
@@ -212,7 +215,9 @@ export default function Home() {
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("visible"));
+        entries.forEach(
+          (entry) => entry.isIntersecting && entry.target.classList.add("visible")
+        );
       },
       { threshold: 0.12 }
     );
@@ -263,7 +268,9 @@ export default function Home() {
             <a href="#ask-city">{t.nav[2]}</a>
             <a href="#business">{t.nav[3]}</a>
             <a href="#roadmap">{t.nav[4]}</a>
-            <a className="navButton" href="#waitlist">{t.nav[5]}</a>
+            <a className="navButton" href="#waitlist">
+              {t.nav[5]}
+            </a>
           </nav>
 
           <div className="language">
@@ -283,7 +290,11 @@ export default function Home() {
         <aside className="dock">
           <div className="homeBubble">⌂</div>
           {dock.map((item, index) => (
-            <a key={item[0]} href={`#${item[0]}`} className={active === item[0] ? "active" : ""}>
+            <a
+              key={item[0]}
+              href={`#${item[0]}`}
+              className={active === item[0] ? "active" : ""}
+            >
               <span>{String(index + 1).padStart(2, "0")}</span>
               <i />
               {item[1]}
