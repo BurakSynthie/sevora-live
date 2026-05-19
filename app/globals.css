@@ -1205,3 +1205,263 @@ body::-webkit-scrollbar-thumb:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== SEVORA FOOTER / CONTACT / LEGAL / PAYMENT ===== */
+
+.siteFooter {
+  position: relative;
+  max-width: 1180px;
+  margin: 20px auto 60px;
+  padding: 34px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(56,189,248,.15), transparent 34%),
+    radial-gradient(circle at 85% 20%, rgba(124,58,237,.18), transparent 38%),
+    rgba(6,13,30,.68);
+  box-shadow: 0 36px 120px rgba(0,0,0,.34);
+  overflow: hidden;
+  backdrop-filter: blur(22px);
+}
+
+.footerGlow {
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(103,232,249,.16), transparent 28%),
+    radial-gradient(circle at 75% 50%, rgba(168,85,247,.16), transparent 30%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.footerTop,
+.footerMiddle,
+.footerBottom {
+  position: relative;
+  z-index: 2;
+}
+
+.footerTop {
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.footerBrand {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.footerLogo {
+  display: grid;
+  flex: 0 0 76px;
+  width: 76px;
+  height: 76px;
+  place-items: center;
+  border: 1px solid rgba(103,232,249,.36);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(8,47,73,.8), rgba(15,23,42,.96));
+  box-shadow: 0 0 44px rgba(56,189,248,.18);
+}
+
+.footerLogo span {
+  font-size: 42px;
+  font-weight: 950;
+  background: linear-gradient(135deg, #67e8f9, #60a5fa 45%, #a78bfa);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.footerBrand strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 28px;
+  letter-spacing: .32em;
+}
+
+.footerBrand p {
+  max-width: 390px;
+  margin: 0;
+  color: rgba(226,232,240,.66);
+  line-height: 1.6;
+}
+
+.footerContactGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.footerContactCard {
+  display: grid;
+  gap: 7px;
+  min-height: 112px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 22px;
+  background: rgba(255,255,255,.035);
+  padding: 16px;
+  transition: .24s ease;
+}
+
+.footerContactCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(103,232,249,.34);
+  background: rgba(34,211,238,.07);
+}
+
+.footerContactCard svg {
+  color: #67e8f9;
+}
+
+.footerContactCard span {
+  color: rgba(226,232,240,.56);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 900;
+}
+
+.footerContactCard strong {
+  color: rgba(248,250,252,.92);
+  font-size: 15px;
+  word-break: break-word;
+}
+
+.footerMiddle {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.footerColumn {
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 24px;
+  background: rgba(2,8,20,.32);
+  padding: 18px;
+}
+
+.footerColumn h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+
+.footerColumn h3 svg {
+  color: #67e8f9;
+}
+
+.footerLinks {
+  display: grid;
+  gap: 9px;
+}
+
+.footerLinks a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.035);
+  color: rgba(226,232,240,.72);
+  padding: 10px 12px;
+  font-size: 13px;
+  transition: .2s ease;
+}
+
+.footerLinks a:hover {
+  color: #fff;
+  background: rgba(34,211,238,.08);
+}
+
+.footerHint {
+  margin: 0 0 16px;
+  color: rgba(226,232,240,.62);
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+.paymentGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.paymentBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  color: rgba(248,250,252,.9);
+  padding: 0 13px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.footerStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(34,197,94,.24);
+  border-radius: 999px;
+  background: rgba(34,197,94,.08);
+  color: #86efac;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.footerStatus span {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 16px #22c55e;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  color: rgba(226,232,240,.52);
+  font-size: 13px;
+}
+
+@media (max-width: 980px) {
+  .siteFooter {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+
+  .footerTop,
+  .footerMiddle {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .siteFooter {
+    padding: 22px;
+  }
+
+  .footerContactGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .footerBrand {
+    display: grid;
+  }
+
+  .footerBottom {
+    display: grid;
+  }
+}
