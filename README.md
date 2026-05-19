@@ -1,3 +1,3 @@
-# SEVORA Live V4
+# SEVORA Live V7
 
-Improved 3D city, scroll animations and back-to-top button.
+Pixel-style landing page implementation based on the approved visual direction.
