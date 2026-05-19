@@ -2703,3 +2703,505 @@ body::-webkit-scrollbar-thumb:hover {
     width: 145px;
   }
 }
+
+/* ===== SEVORA MOBILE PERFECT RESPONSIVE PATCH ===== */
+
+@media (max-width: 1180px) {
+  .page {
+    overflow-x: hidden;
+  }
+
+  .hero {
+    padding: 16px 18px 42px;
+  }
+
+  .header {
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .brand strong {
+    font-size: 20px;
+    letter-spacing: .24em;
+  }
+
+  .brand small {
+    font-size: 10px;
+    letter-spacing: .2em;
+  }
+
+  .topNav,
+  .dock {
+    display: none !important;
+  }
+
+  .language {
+    justify-self: end;
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 38px;
+  }
+
+  .heroCopy {
+    max-width: 760px;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(50px, 12vw, 82px);
+  }
+
+  .lead {
+    max-width: 660px;
+    font-size: 18px;
+  }
+
+  .cityStage {
+    height: 560px;
+    border-radius: 30px;
+  }
+
+  .stats {
+    margin-top: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dailyGrid,
+  .businessGrid,
+  .previewMetricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .events,
+  .business,
+  .ai,
+  .final,
+  .footerTop,
+  .footerMiddle {
+    grid-template-columns: 1fr;
+  }
+
+  .liveSignalsGrid,
+  .dashboardGrid,
+  .askCityContainer,
+  .askCityContainerV2,
+  .roadmapTimeline {
+    grid-template-columns: 1fr !important;
+  }
+
+  .roadmapConnector {
+    display: none;
+  }
+
+  .siteFooter {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 14px 14px 34px;
+  }
+
+  .header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .brand {
+    gap: 12px;
+  }
+
+  .logoMark.large {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+  }
+
+  .brand strong {
+    font-size: 18px;
+    letter-spacing: .22em;
+  }
+
+  .brand small {
+    margin-top: 5px;
+    font-size: 9px;
+    letter-spacing: .16em;
+  }
+
+  .language {
+    justify-self: start;
+    margin-top: 8px;
+    padding: 5px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .language button {
+    min-height: 38px;
+    padding: 7px 9px;
+    font-size: 12px;
+  }
+
+  .heroGrid {
+    gap: 22px;
+    padding-top: 28px;
+  }
+
+  .kicker {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .heroCopy h1 {
+    margin-bottom: 18px;
+    font-size: clamp(46px, 15vw, 62px);
+    line-height: .94;
+    letter-spacing: -.07em;
+  }
+
+  .lead {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .heroActions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .primaryButton,
+  .demoButton {
+    width: 100%;
+    min-height: 54px;
+  }
+
+  .previewProgress {
+    max-width: none;
+    margin-top: 20px;
+  }
+
+  .cityStage {
+    height: 470px;
+    border-radius: 24px;
+  }
+
+  .modeControl {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    width: calc(100% - 20px) !important;
+    margin: 10px;
+    border-radius: 18px;
+  }
+
+  .modeControl div {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modeControl button {
+    min-height: 38px;
+    font-size: 11px;
+  }
+
+  .sceneTag,
+  .premiumSceneTag {
+    transform: scale(.78);
+    transform-origin: center;
+  }
+
+  .selectionPanel,
+  .selectionPanelV12 {
+    display: none;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    margin: 18px 0 0;
+    border-radius: 22px;
+  }
+
+  .stat {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    padding: 18px;
+  }
+
+  .stat:last-child {
+    border-bottom: 0;
+  }
+
+  .previewDashboardSection,
+  .liveSignalsSection,
+  .askCitySection,
+  .roadmapSection {
+    padding: 30px 14px;
+    margin-top: 22px;
+  }
+
+  .previewHeader h2,
+  .liveSignalsIntro h2,
+  .askCityHeader h2,
+  .roadmapHeader h2 {
+    font-size: clamp(34px, 10vw, 46px);
+    letter-spacing: -.055em;
+  }
+
+  .previewMetricGrid,
+  .dailyGrid,
+  .businessGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .previewMetric {
+    padding: 18px;
+  }
+
+  .dashboardGrid {
+    gap: 14px;
+  }
+
+  .buildStatusPanel,
+  .cityAnalysisPanel,
+  .signalRadar,
+  .signalFeed,
+  .askCityLeft,
+  .askCityRight,
+  .askCityRightV2 {
+    border-radius: 24px;
+  }
+
+  .signalRadar {
+    min-height: 320px;
+  }
+
+  .radarSweep {
+    inset: 36px;
+  }
+
+  .signalItem {
+    grid-template-columns: auto 1fr;
+  }
+
+  .signalItem b {
+    grid-column: 2;
+  }
+
+  .askCityLeft,
+  .aiCoreShell {
+    min-height: 340px;
+  }
+
+  .aiStatusPill {
+    display: none;
+  }
+
+  .aiCore {
+    width: 220px;
+    height: 220px;
+  }
+
+  .askCityRight {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .answerTop {
+    grid-template-columns: 1fr;
+  }
+
+  .answerTop b {
+    width: 100%;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  .aiMiniConsole {
+    grid-template-columns: 1fr;
+  }
+
+  .daily {
+    margin-top: 20px;
+    padding: 28px 14px 8px;
+    text-align: left;
+  }
+
+  .daily h2 {
+    margin-left: 0;
+    font-size: 32px;
+  }
+
+  .daily > span {
+    margin-left: 0;
+  }
+
+  .dailyCard {
+    min-height: auto;
+  }
+
+  .business {
+    margin: 22px 14px 0;
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .businessIntro h2 {
+    font-size: 30px;
+  }
+
+  .businessGrid article {
+    border-left: 0;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 18px 0;
+  }
+
+  .roadmapTimeline {
+    gap: 12px;
+  }
+
+  .roadmapCard {
+    min-height: auto;
+  }
+
+  .futureVision {
+    align-items: flex-start;
+  }
+
+  .final {
+    grid-template-columns: 1fr;
+    margin: 22px 14px 30px;
+    padding: 24px;
+    border-radius: 24px;
+    text-align: left;
+  }
+
+  .final .logoMark.large {
+    width: 72px;
+    height: 72px;
+  }
+
+  .final h2 {
+    font-size: 28px;
+  }
+
+  .final form {
+    grid-template-columns: 1fr;
+  }
+
+  .final input,
+  .final button {
+    width: 100%;
+  }
+
+  .final small {
+    grid-column: auto;
+    text-align: left;
+  }
+
+  .siteFooter {
+    margin: 18px 14px 70px;
+    padding: 22px;
+    border-radius: 26px;
+  }
+
+  .footerBrand {
+    display: grid;
+    gap: 14px;
+  }
+
+  .footerRealLogo,
+  .footerLogo {
+    width: 74px;
+    height: 74px;
+  }
+
+  .footerBrand strong {
+    font-size: 22px;
+    letter-spacing: .24em;
+  }
+
+  .footerIconContactGrid,
+  .footerContactGrid,
+  .realPaymentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .footerIconContactCard {
+    min-height: 104px;
+  }
+
+  .storeBadges {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .storeBadges img {
+    width: 100%;
+    max-width: 190px;
+  }
+
+  .footerBottom {
+    display: grid;
+    gap: 8px;
+  }
+
+  .backTop {
+    right: 14px;
+    bottom: 14px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 420px) {
+  .heroCopy h1 {
+    font-size: 43px;
+  }
+
+  .cityStage {
+    height: 430px;
+  }
+
+  .modeControl div {
+    grid-template-columns: 1fr;
+  }
+
+  .sceneTag,
+  .premiumSceneTag {
+    display: none;
+  }
+
+  .liveSignalsIntro,
+  .previewHeader,
+  .askCityHeader,
+  .roadmapHeader {
+    text-align: left;
+  }
+
+  .pulseRow {
+    grid-template-columns: 1fr auto;
+  }
+
+  .pulseRow small {
+    grid-column: 1 / -1;
+  }
+}
