@@ -1528,3 +1528,42 @@ a {
     justify-content: flex-start;
   }
 }
+.footer-with-links {
+  align-items: flex-start;
+}
+
+.footer-with-links div:first-child {
+  display: grid;
+  gap: 10px;
+}
+
+.homepage-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.homepage-footer-links a {
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 13px;
+  font-weight: 850;
+  font-size: 0.9rem;
+}
+
+.homepage-footer-links a:hover {
+  color: var(--cyan);
+  border-color: rgba(94, 231, 255, 0.34);
+}
+
+@media (max-width: 720px) {
+  .footer-with-links {
+    align-items: flex-start;
+  }
+
+  .homepage-footer-links {
+    justify-content: flex-start;
+  }
+}
