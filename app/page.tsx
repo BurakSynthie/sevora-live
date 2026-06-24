@@ -811,10 +811,19 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="footer-clean">
-        <strong>SEVORA</strong>
-        <span>{t.footer}</span>
-      </footer>
+      <footer className="footer-clean footer-with-links">
+  <div>
+    <strong>SEVORA</strong>
+    <span>{t.footer}</span>
+  </div>
+
+  <div className="homepage-footer-links">
+    <a href="/privacy">{lang === "tr" ? "Gizlilik Politikası" : "Privacy Policy"}</a>
+    <a href="/terms">{lang === "tr" ? "Kullanım Şartları" : "Terms of Use"}</a>
+    <a href="/community">{lang === "tr" ? "Topluluk Kuralları" : "Community Guidelines"}</a>
+    <a href="/contact">{lang === "tr" ? "İletişim" : "Contact"}</a>
+  </div>
+</footer>
 
       <nav className="mobile-bottom-nav">
         {["home", "moods", "rooms", "safety"].map((id) => (
