@@ -6,6 +6,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
     "@react-three/drei": "latest",
     "@react-three/fiber": "latest",
     "@types/node": "latest",
